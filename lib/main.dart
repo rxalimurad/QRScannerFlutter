@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    c.selectedTab.value = 1;
+    c.selectedTab.value = 2;
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,

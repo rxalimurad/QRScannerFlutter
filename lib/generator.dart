@@ -17,7 +17,7 @@ class QRGeneratorSharePage extends StatefulWidget {
 
 class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
   final key = GlobalKey();
-  String textdata = '<a class="vglnk" href="http://androidride.com" rel="nofollow"><span>androidride</span><span>.</span><span>com</span></a>';
+  String textdata = '';
   final textcontroller = TextEditingController();
   File? file;
 
