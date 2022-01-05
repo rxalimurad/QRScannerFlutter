@@ -32,6 +32,10 @@ dependencies:
   curved_navigation_bar:
   get:
   url_launcher: ^6.0.17
+  qr_flutter: ^4.0.0
+  path_provider:
+  share_plus: ^2.1.2
+
 
 dev_dependencies:
   flutter_test:
