@@ -28,6 +28,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   qr_code_scanner: ^0.6.1
+  r_scan: ^0.1.6+1
   cupertino_icons: ^1.0.2
   curved_navigation_bar:
   get:
@@ -35,6 +36,8 @@ dependencies:
   qr_flutter: ^4.0.0
   path_provider:
   share_plus: ^2.1.2
+  image_picker: ^0.8.4+4
+  sqflite:
 
 
 dev_dependencies:
@@ -56,7 +59,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  assets:
+    - assets/db_file/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

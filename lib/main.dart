@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:qr_scan_generator/scanner.dart';
 
 import 'generator.dart';
+import 'history.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    c.selectedTab.value = 2;
+    c.selectedTab.value = 1;
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
               visible: c.selectedTab.value == 3,
               child: Container(
                 color: getColor(),
-                child: Center(child: Text("Tab 3")),
+                child: HistoryView(),
               ),
             );
           }),
@@ -98,6 +99,10 @@ getColor() {
   }
 }
 
+enum InputMode {
+  camera, gallery
+}
 class BottomController extends GetxController {
   var selectedTab = 0.obs;
+  var inputMode = InputMode.camera.obs;
 }
