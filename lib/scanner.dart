@@ -68,17 +68,17 @@ class _QRViewExampleState extends State<QRViewExample> {
           Positioned(
             child: FloatingActionButton(
                 onPressed: () async {
-                  DBHandler.getAppMessages();
-                  // var _picker = ImagePicker();
-                  // // Pick an image
-                  // final XFile? image =
-                  //     await _picker.pickImage(source: ImageSource.gallery);
-                  // final result = await RScan.scanImagePath(image!.path);
-                  // if (result.message == null) {
-                  //   showAlertDialog("Empty", "" );
-                  // } else {
-                  //   showAlertDialog("${result.type}", result.message! );
-                  // }
+
+                  var _picker = ImagePicker();
+                  // Pick an image
+                  final XFile? image =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  final result = await RScan.scanImagePath(image!.path);
+                  if (result.message == null) {
+                    showAlertDialog("Empty", "" );
+                  } else {
+                    showAlertDialog("${result.type}", result.message! );
+                  }
 
 
 
@@ -143,7 +143,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   showAlertDialog(String title, String content) {
     if (content.isNotEmpty) {
-
+      DBHandler.addData(QRHistory(0,content,"01/01/01"));
     }
 
     // set up the button

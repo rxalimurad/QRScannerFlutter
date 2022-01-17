@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_scan_generator/scanner.dart';
 
+import 'DBHandler.dart';
 import 'generator.dart';
 import 'history.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+ runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
   final BottomController c = Get.put(BottomController());
-
+  
   @override
   Widget build(BuildContext context) {
     c.selectedTab.value = 1;
