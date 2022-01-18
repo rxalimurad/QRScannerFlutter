@@ -14,9 +14,9 @@ class HistoryView extends StatefulWidget {
 class HistoryViewState extends State<HistoryView> {
   @override
   initState() {
+    Get.lazyPut(()=>HistoryController());
     setupDB();
-    super.initState();
-    Get.put(HistoryController());
+    super.initState() ;
   }
 
   Future<void> setupDB() async {

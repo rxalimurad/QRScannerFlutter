@@ -143,7 +143,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   showAlertDialog(String title, String content) {
     if (content.isNotEmpty) {
-      DBHandler.addData(QRHistory(0,content,"01/01/01"));
+      DBHandler.addData(QRHistory(1,content,"01/01/01"));
     }
 
     // set up the button

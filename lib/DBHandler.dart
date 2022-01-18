@@ -9,6 +9,7 @@ class DBHandler {
       'CREATE TABLE history(sr INTEGER PRIMARY KEY, data TEXT, time TEXT)';
   static String getQuery = 'select * from history';
 
+
   static Future<Database> initDB() async {
     var dbPath = await getDatabasesPath();
     var database =
@@ -37,11 +38,7 @@ class DBHandler {
 
   static Future<void> addData(QRHistory entry) async {
     var db = await initDB();
-    await db.insert(
-      'history',
-      entry.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    var _  = await db.rawQuery("insert into history (data, time) values (\"${entry.data}\", \"${entry.time}\")");
     db.close();
   }
 }
