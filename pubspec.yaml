@@ -38,6 +38,7 @@ dependencies:
   share_plus: ^2.1.2
   image_picker: ^0.8.4+4
   sqflite:
+  intl:
 
 
 dev_dependencies:

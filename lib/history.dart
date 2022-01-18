@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-
 import 'DBHandler.dart';
 
 class HistoryView extends StatefulWidget {
@@ -34,11 +33,19 @@ class HistoryViewState extends State<HistoryView> {
           return Center(
               child: Row(
                 children: [
-                  Text(c.qrHistoryList.value[index].data),
-                  Spacer(),
-                  Text(c.qrHistoryList.value[index].time),
-                ],
-              ));
+                  Container(height: 100, width: 100, color: Colors.red,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start ,
+                    children: [
+                      Text(c.qrHistoryList.value[index].data, textAlign: TextAlign.left,),
+                      SizedBox(height: 10,),
+                      Text(c.qrHistoryList.value[index].time),
+
+                    ],),
+                      SizedBox(height: 100,)
+
+                ]    ),
+              );
         },
         itemCount: c.qrHistoryList.value.length
       );

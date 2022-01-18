@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_scan_generator/DBHandler.dart';
+import 'package:qr_scan_generator/util.dart';
 import 'package:r_scan/r_scan.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 import 'DataCacheManager.dart';
 import 'main.dart';
@@ -143,7 +143,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   showAlertDialog(String title, String content) {
     if (content.isNotEmpty) {
-      DBHandler.addData(QRHistory(1,content,"01/01/01"));
+      DBHandler.addData(QRHistory(0,content,Util.getDateNow()));
     }
 
     // set up the button

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_scan_generator/scanner.dart';
 
-import 'DBHandler.dart';
 import 'generator.dart';
 import 'history.dart';
 
@@ -95,7 +94,7 @@ getColor() {
   } else if (index == 2) {
     return Colors.deepPurple;
   } else if (index == 3) {
-    return Colors.cyan;
+    return Colors.white;
   } else {
     return Colors.green;
   }
