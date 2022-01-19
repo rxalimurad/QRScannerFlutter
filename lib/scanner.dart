@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:crop/crop.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:r_scan/r_scan.dart';
 
@@ -75,14 +76,12 @@ class _QRViewExampleState extends State<QRViewExample> {
                   final XFile? image =
                       await _picker.pickImage(source: ImageSource.gallery);
                   final result = await RScan.scanImagePath(image!.path);
-                  final controller = CropController();
-                  // controller.
-                  print(",,..${result?.points}");
                   if (result.message == null) {
 
-                    AlertPopup.showAlertDialog("Empty", "" ,context, null);
+                    AlertPopup.showAlertDialog("Empty", "" ,context, "");
+
                   } else {
-                    AlertPopup.showAlertDialog("${result.type}", result.message!, context ,Image.memory(await image.readAsBytes()));
+                    AlertPopup.showAlertDialog("${result.type}", result.message!, context ,result.message!);
                   }
 
 
@@ -129,7 +128,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     });
   controller.scannedDataStream.listen((scanData) {
     if (!DataCacheManager().showingPopup) {
-        AlertPopup.showAlertDialog("${scanData.format}", "${scanData.code}", context,Image.memory(Uint8List.fromList(scanData.rawBytes!)));
+        AlertPopup.showAlertDialog("${scanData.format}", "${scanData.code}", context,scanData.code!);
         print(
             ",,..${scanData.code} ${scanData.format} ${DataCacheManager().showingPopup}");
       }

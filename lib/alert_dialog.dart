@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_scan_generator/util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,15 +34,20 @@ class AlertPopup {
     return;
   }
 
-  static showAlertDialog(String title, String content, BuildContext context, Widget? img) {
+  static showAlertDialog(String title, String content, BuildContext context, String img) {
     if (content.isNotEmpty) {
-      DBHandler.addData(QRHistory(0, content, Util.getDateNow()));
+      if (img != null) {
+
+      }
+
     }
 
     // set up the button
     Widget okButton = TextButton(
       child: Text(getButtonTitle(content)),
       onPressed: () async {
+        var imgData = Util.getImage(context);
+        DBHandler.addData(QRHistory(0, content, Util.getDateNow(),await imgData));
         DataCacheManager().showingPopup = false;
         if (GetUtils.isURL(content)) {
           await _launchURL(content);
@@ -67,7 +74,7 @@ class AlertPopup {
       actions: [
         okButton,
         if (img != null)
-            img!
+          Container(child: RepaintBoundary(child: QrImage(data: img, size: 300,)))
       ],
     );
 
