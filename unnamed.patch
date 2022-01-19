@@ -1,0 +1,79 @@
+Index: lib/history.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/history.dart	(revision ee761aa46518c9e0eb949e97c948f39c1ca8ce57)
++++ lib/history.dart	(date 1642505467000)
+@@ -14,9 +14,9 @@
+ class HistoryViewState extends State<HistoryView> {
+   @override
+   initState() {
++    Get.lazyPut(()=>HistoryController());
+     setupDB();
+-    super.initState();
+-    Get.put(HistoryController());
++    super.initState() ;
+   }
+ 
+   Future<void> setupDB() async {
+Index: lib/DBHandler.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/DBHandler.dart	(revision ee761aa46518c9e0eb949e97c948f39c1ca8ce57)
++++ lib/DBHandler.dart	(date 1642505299000)
+@@ -9,6 +9,7 @@
+       'CREATE TABLE history(sr INTEGER PRIMARY KEY, data TEXT, time TEXT)';
+   static String getQuery = 'select * from history';
+ 
++
+   static Future<Database> initDB() async {
+     var dbPath = await getDatabasesPath();
+     var database =
+@@ -37,11 +38,7 @@
+ 
+   static Future<void> addData(QRHistory entry) async {
+     var db = await initDB();
+-    await db.insert(
+-      'history',
+-      entry.toMap(),
+-      conflictAlgorithm: ConflictAlgorithm.replace,
+-    );
++    var _  = await db.rawQuery("insert into history (data, time) values (\"${entry.data}\", \"${entry.time}\")");
+     db.close();
+   }
+ }
+Index: lib/scanner.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/scanner.dart	(revision ee761aa46518c9e0eb949e97c948f39c1ca8ce57)
++++ lib/scanner.dart	(date 1642498562000)
+@@ -143,7 +143,7 @@
+ 
+   showAlertDialog(String title, String content) {
+     if (content.isNotEmpty) {
+-      DBHandler.addData(QRHistory(0,content,"01/01/01"));
++      DBHandler.addData(QRHistory(1,content,"01/01/01"));
+     }
+ 
+     // set up the button
+diff --git assets/db_file/history.db assets/db_file/history.db
+index d9cb180d18d6b48c7529bbdfc28cba5134f30224..ff2624f40cdebb7a56386fd230a2bb5afc4b51f2
+GIT binary patch
+literal 12288
+zc%1Fp-*3`D902g|!EK`$dYY&NN%UGn0^4+K&_$d-K+`C3;AAzCCsU;$1h(urLRfs+
+zU*LoP#{L)+pM2l*UVJw3Ita|g2H!O1`{}jUZ@+inHtkc>?!MY?OOH4AMbDKy2bX~m
+zC~^(}5w(V4W<jm=TuflT2;9x{nA!=kWndrG1|ftHLI@#*5c;R>gcjo~E2J*ncU`Z4
+z&{eO^Z~NZCz}tI&F$_Pg*(Jy3PU*?E%`YU=dv4ELRZ-@MkfnGsNsh)fKeYRDUyLSQ
+z=$9Ji<fzHhQO)cNQ!7^;`<Y!^Rbj)GuBkcp8^@1iyXQ@#om#n4s@3@myPo!^@zQJO
+zWx1+qSL~{jiDqK#5U#{dLaf1#*)r4FC;e3a%D(Bx`e*%6clGD`ntna@BX;t)?>|Ba
+zA%qY@2%&l6MGChJx7+5Gfp8ny^)=Pj3k56wI4JQbDDf~T@gOL%6_mIilqduwQW}LV
+zBbT?%npCZo%Qsu&el{$zMB%oP&-ufet&uevr#7<Ljhl-U?iiNvS}h?5q9Zy|<U7-;
+zg&UMY%4m8+A%{|^EuWRW7pCAErCopF^SkJD=H^vGAu*XbtH-{;H87?z)%<Vki3R`K
+z{d0RldP8gT-1t*7M8W#)70gDd8rs=IPeuOdX8GUd3HuJJA%qY@2qA<JLg@c-iG-76
+I@;^cGCrr)M3IG5A
+
