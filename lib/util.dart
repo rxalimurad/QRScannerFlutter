@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class Util {
  static String getDateNow() {
    final DateTime now = DateTime.now();
-   final DateFormat formatter = DateFormat('MMM dd, yyyy');
+   final DateFormat formatter = DateFormat('MMM dd, yyyy hh:mm a');
    final String formatted = formatter.format(now);
    return formatted;
  }

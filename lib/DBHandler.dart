@@ -1,10 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
 class DBHandler {
   static String createQuery =
       'CREATE TABLE history(sr INTEGER PRIMARY KEY, data TEXT, time TEXT)';
   static String getQuery = 'select * from history';
-
 
   static Future<Database> initDB() async {
     var dbPath = await getDatabasesPath();
@@ -34,7 +34,8 @@ class DBHandler {
 
   static Future<void> addData(QRHistory entry) async {
     var db = await initDB();
-    var _  = await db.rawQuery("insert into history (data, time) values (\"${entry.data}\", \"${entry.time}\" )");
+    var _ = await db.rawQuery(
+        "insert into history (data, time) values (\"${entry.data}\", \"${entry.time}\" )");
     db.close();
   }
 }
@@ -43,6 +44,7 @@ class QRHistory {
   int sr = 0;
   String data = "";
   String time = "";
+
   Map<String, dynamic> toMap() {
     return {
       'sr': sr,
@@ -50,5 +52,6 @@ class QRHistory {
       'time': time,
     };
   }
+
   QRHistory(this.sr, this.data, this.time);
 }

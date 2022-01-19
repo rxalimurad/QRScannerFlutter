@@ -21,7 +21,7 @@ class HistoryViewState extends State<HistoryView> {
 
   Future<void> setupDB() async {
     HistoryController c = Get.find();
-    c.qrHistoryList.value = await DBHandler.getData();
+    c.qrHistoryList.value = (await DBHandler.getData()).reversed.toList();
   }
 
   @override
@@ -35,7 +35,7 @@ class HistoryViewState extends State<HistoryView> {
               child: Row(
                 children: [
                   QrImage(
-                    size: 300,//size of the QrImage widget.
+                    size: 50,//size of the QrImage widget.
                     // ignore: invalid_use_of_protected_member
                     data: c.qrHistoryList.value[index].data,//textdata used to create QR code
                   ),
