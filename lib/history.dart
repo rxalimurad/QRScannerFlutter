@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'DBHandler.dart';
 
 class HistoryView extends StatefulWidget {
@@ -33,12 +34,18 @@ class HistoryViewState extends State<HistoryView> {
           return Center(
               child: Row(
                 children: [
-                  Container(height: 100, width: 100, color: Colors.red,),
+                  QrImage(
+                    size: 300,//size of the QrImage widget.
+                    // ignore: invalid_use_of_protected_member
+                    data: c.qrHistoryList.value[index].data,//textdata used to create QR code
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start ,
                     children: [
+                      // ignore: invalid_use_of_protected_member
                       Text(c.qrHistoryList.value[index].data, textAlign: TextAlign.left,),
                       SizedBox(height: 10,),
+                      // ignore: invalid_use_of_protected_member
                       Text(c.qrHistoryList.value[index].time),
 
                     ],),
@@ -47,6 +54,7 @@ class HistoryViewState extends State<HistoryView> {
                 ]    ),
               );
         },
+          // ignore: invalid_use_of_protected_member
         itemCount: c.qrHistoryList.value.length
       );
     });

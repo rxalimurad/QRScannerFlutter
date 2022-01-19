@@ -1,19 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_scan_generator/util.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'DBHandler.dart';
 import 'DataCacheManager.dart';
 import 'package:qr_scan_generator/DBHandler.dart';
-import 'package:qr_scan_generator/util.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/services.dart';
+
 class AlertPopup {
 
   static String getButtonTitle(String content) {
@@ -34,20 +27,16 @@ class AlertPopup {
     return;
   }
 
-  static showAlertDialog(String title, String content, BuildContext context, String img) {
+  static showAlertDialog(String title, String content, BuildContext context) {
     if (content.isNotEmpty) {
-      if (img != null) {
-
-      }
-
+        DBHandler.addData(QRHistory(0, content, Util.getDateNow()));
     }
 
     // set up the button
     Widget okButton = TextButton(
       child: Text(getButtonTitle(content)),
       onPressed: () async {
-        var imgData = Util.getImage(context);
-        DBHandler.addData(QRHistory(0, content, Util.getDateNow(),await imgData));
+
         DataCacheManager().showingPopup = false;
         if (GetUtils.isURL(content)) {
           await _launchURL(content);
@@ -73,8 +62,7 @@ class AlertPopup {
       content: Text(content),
       actions: [
         okButton,
-        if (img != null)
-          Container(child: RepaintBoundary(child: QrImage(data: img, size: 300,)))
+
       ],
     );
 

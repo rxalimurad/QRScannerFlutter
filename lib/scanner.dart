@@ -1,18 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:crop/crop.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-
 import 'package:r_scan/r_scan.dart';
-
-
 import 'DataCacheManager.dart';
 import 'alert_dialog.dart';
 import 'main.dart';
@@ -78,10 +70,10 @@ class _QRViewExampleState extends State<QRViewExample> {
                   final result = await RScan.scanImagePath(image!.path);
                   if (result.message == null) {
 
-                    AlertPopup.showAlertDialog("Empty", "" ,context, "");
+                    AlertPopup.showAlertDialog("Empty", "" ,context);
 
                   } else {
-                    AlertPopup.showAlertDialog("${result.type}", result.message!, context ,result.message!);
+                    AlertPopup.showAlertDialog("${result.type}", result.message!, context );
                   }
 
 
@@ -128,7 +120,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     });
   controller.scannedDataStream.listen((scanData) {
     if (!DataCacheManager().showingPopup) {
-        AlertPopup.showAlertDialog("${scanData.format}", "${scanData.code}", context,scanData.code!);
+        AlertPopup.showAlertDialog("${scanData.format}", "${scanData.code}",context);
         print(
             ",,..${scanData.code} ${scanData.format} ${DataCacheManager().showingPopup}");
       }

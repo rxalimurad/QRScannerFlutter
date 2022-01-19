@@ -1,13 +1,8 @@
-import 'dart:io' as io;
-import 'dart:typed_data';
-
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
-
 class DBHandler {
   static String createQuery =
-      'CREATE TABLE history(sr INTEGER PRIMARY KEY, data TEXT, time TEXT, picture BLOB)';
+      'CREATE TABLE history(sr INTEGER PRIMARY KEY, data TEXT, time TEXT)';
   static String getQuery = 'select * from history';
 
 
@@ -31,8 +26,7 @@ class DBHandler {
       var sr = element["sr"] as int;
       var data = element["data"] as String;
       var time = element["time"] as String;
-      var picture = element["picture"] as Uint8List;
-      qrHistoryList.add(QRHistory(sr, data, time, picture));
+      qrHistoryList.add(QRHistory(sr, data, time));
     });
     db.close();
     return qrHistoryList;
@@ -40,7 +34,7 @@ class DBHandler {
 
   static Future<void> addData(QRHistory entry) async {
     var db = await initDB();
-    var _  = await db.rawQuery("insert into history (data, time, picture) values (\"${entry.data}\", \"${entry.time}\" \"${entry.picture}\" )");
+    var _  = await db.rawQuery("insert into history (data, time) values (\"${entry.data}\", \"${entry.time}\" )");
     db.close();
   }
 }
@@ -49,14 +43,12 @@ class QRHistory {
   int sr = 0;
   String data = "";
   String time = "";
-  Uint8List picture;
   Map<String, dynamic> toMap() {
     return {
       'sr': sr,
       'data': data,
       'time': time,
-      'picture': picture
     };
   }
-  QRHistory(this.sr, this.data, this.time, this.picture);
+  QRHistory(this.sr, this.data, this.time);
 }

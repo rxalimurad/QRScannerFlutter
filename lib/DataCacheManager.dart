@@ -1,4 +1,3 @@
-import 'dart:collection';
 class DataCacheManager {
   var showingPopup = false;
   static final DataCacheManager _singleton = DataCacheManager._internal();
