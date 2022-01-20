@@ -40,6 +40,7 @@ dependencies:
   sqflite:
   intl:
   crop: ^0.5.2
+  flutter_snake_navigationbar:
 
 
 dev_dependencies:
