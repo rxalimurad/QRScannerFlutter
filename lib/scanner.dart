@@ -35,16 +35,16 @@ class _ScannerState extends State<Scanner> {
    return Stack(
         children: [
           _buildQrView(context),
-          // Positioned(
-          //   child: FloatingActionButton(
-          //       onPressed: () async {
-          //         await controller?.toggleFlash();
-          //         setState(() {});
-          //       },
-          //       child: (Icon(Icons.flash_on, size: 30))),
-          //   right: 20,
-          //   bottom: 20,
-          // ),
+          Positioned(
+            child: FloatingActionButton(
+                onPressed: () async {
+                  await controller?.toggleFlash();
+                  setState(() {});
+                },
+                child: (Icon(Icons.flash_on, size: 30))),
+            right: 20,
+            bottom: 100,
+          ),
           // Positioned(
           //   child: FloatingActionButton(
           //       onPressed: () async {
@@ -95,9 +95,9 @@ class _ScannerState extends State<Scanner> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.yellow,
-          borderRadius: 60,
-          borderLength: 69,
+          borderColor: Colors.red,
+          borderRadius: 40,
+          borderLength: 40,
           borderWidth: 20,
           cutOutSize: scanArea),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),

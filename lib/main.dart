@@ -19,6 +19,7 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: RootView(),
     );
   }
@@ -41,7 +42,6 @@ class _RootViewState extends State<RootView> {
 
   @override
   Widget build(BuildContext context) {
-    c.selectedTab.value == 1
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,

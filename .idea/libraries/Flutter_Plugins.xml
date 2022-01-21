@@ -1,21 +1,22 @@
 <component name="libraryTable">
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.4" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-0.6.1" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share_plus_web-2.0.4" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.4" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.4" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.11" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.17" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share_plus-2.2.0" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.5" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share_plus_macos-2.0.2" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.8" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.4+4" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.4" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/r_scan-0.1.6+1" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.1" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/share_plus-2.2.0" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.6" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/share_plus_macos-2.0.2" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/r_scan-0.1.6+1" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.11" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.18" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.4+4" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.2" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.8" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/share_plus_web-2.0.4" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.5" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/git/animated_qr_code_scanner-18fbec855161f8937cbd5892445da1d099b9ee95" />
+      <root url="file://$USER_HOME$/Documents/Code/flutter/.pub-cache/git/qr_code_scanner-25803f71b2e925a1498e7a9330e54e2707cc8b85" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
