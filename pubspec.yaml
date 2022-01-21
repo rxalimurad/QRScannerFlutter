@@ -27,10 +27,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  animated_qr_code_scanner:
-    git:
-      url: https://github.com/kiatuki/animated_qr_code_scanner.git
-      ref: v0.1.7
+  qr_code_scanner:
   r_scan: ^0.1.6+1
   cupertino_icons: ^1.0.2
   curved_navigation_bar:
@@ -43,7 +40,7 @@ dependencies:
   sqflite:
   intl:
   crop: ^0.5.2
-  flutter_snake_navigationbar:
+  salomon_bottom_bar: ^3.2.0
 
 
 dev_dependencies:

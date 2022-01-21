@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:qr_scan_generator/scanner.dart';
-
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'controllers.dart';
-import 'custom_icons.dart';
 import 'generator.dart';
 import 'history.dart';
 
@@ -34,10 +31,13 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   final BottomController c = Get.put(BottomController());
+  final pageViewController = PageController();
   int _selectedItemPosition = 0;
+
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIMode (SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
   }
 
   @override
@@ -52,67 +52,57 @@ class _RootViewState extends State<RootView> {
         backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      body: Stack(children: [
-        Obx(() {
-          return Visibility(
-            visible: c.selectedTab.value == 1,
-            child: Container(
-              child: Scanner(),
-            ),
-          );
-        }),
-        Obx(() {
-          return Visibility(
-            visible: c.selectedTab.value == 2,
-            child: Container(
-              child: QRGeneratorSharePage(),
-            ),
-          );
-        }),
-        Obx(() {
-          return Visibility(
-            visible: c.selectedTab.value == 3,
-            child: Container(
-              child: HistoryView(),
-            ),
-          );
-        }),
-        Obx(() {
-          return Visibility(
-            visible: c.selectedTab.value == 4,
-            child: Container(
-              child: Center(child: Text("Tab 4")),
-            ),
-          );
-        }),
-      ]),
-      bottomNavigationBar: SnakeNavigationBar.color(
-        // height: 80,
-        behaviour: SnakeBarBehaviour.floating,
-        snakeShape: SnakeShape.circle,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-        ),
-        padding: const EdgeInsets.all(12),
-        snakeViewColor: Colors.black,
-        selectedItemColor: null,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        currentIndex: _selectedItemPosition,
-        onTap: (index) => setState(() { c.selectedTab.value = index + 1; _selectedItemPosition = index;}),
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.camera), label: "Scan"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.create_new_folder_outlined), label: "Create"),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: "About"),
-        ],
-        selectedLabelStyle: const TextStyle(fontSize: 14),
-        unselectedLabelStyle: const TextStyle(fontSize: 10),
+      body: Container(
+        child: PageView(children: [
+          Scanner(),
+          QRGeneratorSharePage(),
+          HistoryView(),
+          Center(child: Text("Tab 4")),
+
+        ], onPageChanged: (index) {
+          setState(() {
+            _selectedItemPosition = index;
+          });
+        }, controller: pageViewController,),
       ),
+      bottomNavigationBar: Container(
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: new BorderRadius.all(const Radius.circular(0.0),)
+        ),
+        child: SalomonBottomBar(
+        currentIndex: _selectedItemPosition,
+        onTap: (index) => setState(() {
+          c.selectedTab.value = index + 1;
+          _selectedItemPosition = index;
+          pageViewController.animateToPage(index,  duration: const Duration(milliseconds: 200),
+            curve: Curves.bounceIn,);
+        }),
+        items: [
+          SalomonBottomBarItem(
+            icon: Icon(Icons.camera),
+            title: Text("Scan"),
+            selectedColor: Colors.grey,
+          ),
+          SalomonBottomBarItem(
+            icon: Icon(Icons.create_new_folder_outlined),
+            title: Text("Create"),
+            selectedColor: Colors.pink,
+          ),
+          SalomonBottomBarItem(
+            icon: Icon(Icons.history),
+            title: Text("History"),
+            selectedColor: Colors.orange,
+          ),
+          SalomonBottomBarItem(
+            icon: Icon(Icons.person),
+            title: Text("About"),
+            selectedColor: Colors.teal,
+          ),
+        ],
+    ),
+      ),
+
     );
   }
 }
