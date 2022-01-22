@@ -1,13 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:r_scan/r_scan.dart';
+import 'package:qr_scan_generator/resultScreen.dart';
+
 import 'DataCacheManager.dart';
-import 'alert_dialog.dart';
-import 'main.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -115,10 +113,13 @@ class _ScannerState extends State<Scanner> {
     });
   controller.scannedDataStream.listen((scanData) {
     if (!DataCacheManager().showingPopup) {
-        AlertPopup.showAlertDialog("${scanData.format}", "${scanData.code}",context);
-        print(
-            ",,..${scanData.code} ${scanData.format} ${DataCacheManager().showingPopup}");
-      }
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  ResultScreen("${scanData.code}")),
+        );
+        DataCacheManager().showingPopup = true;
+
+    }
     });
   }
 

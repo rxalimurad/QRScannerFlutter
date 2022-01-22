@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:qr_scan_generator/resultScreen.dart';
 import 'package:qr_scan_generator/scanner.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'controllers.dart';
@@ -30,22 +31,20 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
-  final BottomController c = Get.put(BottomController());
   final pageViewController = PageController();
   int _selectedItemPosition = 0;
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode (SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: true,
-      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      extendBody: false,
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
@@ -57,7 +56,7 @@ class _RootViewState extends State<RootView> {
           Scanner(),
           QRGeneratorSharePage(),
           HistoryView(),
-          Center(child: Text("Tab 4")),
+          ResultScreen("5634534534543"),
 
         ], onPageChanged: (index) {
           setState(() {
@@ -73,7 +72,6 @@ class _RootViewState extends State<RootView> {
         child: SalomonBottomBar(
         currentIndex: _selectedItemPosition,
         onTap: (index) => setState(() {
-          c.selectedTab.value = index + 1;
           _selectedItemPosition = index;
           pageViewController.animateToPage(index,  duration: const Duration(milliseconds: 200),
             curve: Curves.bounceIn,);
