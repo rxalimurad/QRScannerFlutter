@@ -26,10 +26,15 @@ class _ResultScreenState extends State<ResultScreen> {
       onWillPop: _onBackPress,
       child: Scaffold(
         appBar: CustomNavigaton(
-            title: Text(
-          "Scanner Result",
-          style: TextStyle(color: Colors.white, fontSize: 30),
-        )),
+            title: Row(children: [
+              IconButton(onPressed: () {
+                _onBackPress();
+              }, icon: Icon(Icons.arrow_back, color: Colors.white, size: 30,)),
+              Text(
+                "Scanner Result",
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ],)),
         body: Container(
           width: double.infinity,
           child: Column(children: [
@@ -78,7 +83,7 @@ class _ResultScreenState extends State<ResultScreen> {
                               break;
                             case ActionsEnum.share:
                               await FlutterShare.share(
-                                  title: 'widget.qrData',
+                                text: widget.qrData, title: 'QR Scan Result'
                               );
                               break;
 
@@ -122,8 +127,9 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  Future<bool> _onBackPress() {
+  Future<bool> _onBackPress() async {
     DataCacheManager().showingPopup = false;
+    Navigator.of(context).pop(false);
     return true;
   }
 }
