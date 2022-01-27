@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomNavigaton extends StatelessWidget implements PreferredSizeWidget {
-  final Text title;
+  final Widget title;
   final double barHeight = 50.0;
 
   CustomNavigaton({Key? key, required this.title}) : super(key: key);
