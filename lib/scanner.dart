@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_scan_generator/DBHandler.dart';
 import 'package:qr_scan_generator/resultScreen.dart';
 import 'package:r_scan/r_scan.dart';
 
