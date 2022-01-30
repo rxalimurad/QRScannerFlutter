@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:qr_scan_generator/resultScreen.dart';
 import 'package:qr_scan_generator/scanner.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'controllers.dart';
 import 'generator.dart';
 import 'history.dart';
 
-void main() => runApp(const ExampleApp());
 
-class ExampleApp extends StatelessWidget {
-  const ExampleApp({Key? key}) : super(key: key);
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  runApp(const MyApp());
+}
 
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: RootView(),
+    return FutureBuilder(
+      builder: (context, AsyncSnapshot snapshot) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: const RootView(),
+          );
+
+      },
     );
   }
 }

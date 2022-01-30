@@ -7,6 +7,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'CustomNavigation.dart';
+
 class QRGeneratorSharePage extends StatefulWidget {
   const QRGeneratorSharePage({Key? key}) : super(key: key);
 
@@ -22,71 +24,82 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          SizedBox(height: 100,),
-          RepaintBoundary(
-            key: key,
-            child: Container(
-              color: Colors.white,
-              child: QrImage(
-                size: 300,//size of the QrImage widget.
-                data: textdata,//textdata used to create QR code
+    return Scaffold(
+      appBar: CustomNavigaton(
+        title:  Text(
+          "Create",
+          style: TextStyle(color: Colors.white, fontSize: 30),
+        ),),
+
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+            children: [
+              SizedBox(height: 100,),
+              RepaintBoundary(
+                key: key,
+                child: Container(
+                  color: Colors.white,
+                  child: QrImage(
+                    size: 220,//size of the QrImage widget.
+                    data: textdata,//textdata used to create QR code
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: textcontroller,
-            ),
-          ),
-          ElevatedButton(
-            child: Text('Create QR Code'),
-            onPressed: () async {
-              setState(() {
+              SizedBox(
+                height: 50,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: textcontroller,
+                ),
+              ),
+              ElevatedButton(
+                child: Text('Create QR Code'),
+                onPressed: () async {
+                  setState(() {
 //rebuilds UI with new QR code
-                textdata = textcontroller.text;
-              });
-            },
-          ),
-          ElevatedButton(
-            child: Text('Share'),
-            onPressed: () async {
-              try {
-                RenderRepaintBoundary boundary = key.currentContext!
-                    .findRenderObject() as RenderRepaintBoundary;
+                    textdata = textcontroller.text;
+                  });
+                },
+              ),
+              ElevatedButton(
+                child: Text('Share'),
+                onPressed: () async {
+                  try {
+                    RenderRepaintBoundary boundary = key.currentContext!
+                        .findRenderObject() as RenderRepaintBoundary;
 //captures qr image
-                var image = await boundary.toImage();
+                    var image = await boundary.toImage();
 
-                ByteData? byteData =
-                await image.toByteData(format: ImageByteFormat.png);
+                    ByteData? byteData =
+                    await image.toByteData(format: ImageByteFormat.png);
 
-                Uint8List pngBytes = byteData!.buffer.asUint8List();
+                    Uint8List pngBytes = byteData!.buffer.asUint8List();
 //app directory for storing images.
-                final appDir = await getApplicationDocumentsDirectory();
+                    final appDir = await getApplicationDocumentsDirectory();
 //current time
-                var datetime = DateTime.now();
+                    var datetime = DateTime.now();
 //qr image file creation
-                file = await File('${appDir.path}/$datetime.png').create();
+                    file = await File('${appDir.path}/$datetime.png').create();
 //appending data
-                await file?.writeAsBytes(pngBytes);
+                    await file?.writeAsBytes(pngBytes);
 //Shares QR image
-                await Share.shareFiles(
-                  [file!.path],
-                  mimeTypes: ["image/png"],
-                  text: "Share the QR Code",
-                );
-              } catch (e) {
-                print(e.toString());
-              }
-            },
-          )
-        ],
-      );
+                    await Share.shareFiles(
+                      [file!.path],
+                      mimeTypes: ["image/png"],
+                      text: "Share the QR Code",
+                    );
+                  } catch (e) {
+                    print(e.toString());
+                  }
+                },
+              )
+            ],
+          ),
+      ),
+    );
   }
 }
 

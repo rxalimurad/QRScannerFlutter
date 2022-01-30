@@ -41,6 +41,10 @@ dependencies:
   intl:
   crop: ^0.5.2
   salomon_bottom_bar: ^3.2.0
+  dotted_border: ^2.0.0+2
+  flutter_share: ^2.0.0
+
+
 
 
 dev_dependencies:
@@ -64,6 +68,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/db_file/
+    - assets/ic_qr.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -89,3 +94,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
