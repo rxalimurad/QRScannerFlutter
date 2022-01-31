@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:qr_scan_generator/CustomNavigation.dart';
+import 'package:qr_scan_generator/DBHandler.dart';
 import 'package:qr_scan_generator/DataCacheManager.dart';
 import 'package:qr_scan_generator/util.dart';
 
@@ -13,6 +14,7 @@ class ResultScreen extends StatefulWidget {
   String qrData;
   bool isNRF = false;
   ResultScreen(this.qrData) {
+    DBHandler.addData(QRHistory(0, qrData, Util.getDateNow()));
     if (this.qrData.isEmpty)
     isNRF = true;
   }
