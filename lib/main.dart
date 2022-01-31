@@ -68,7 +68,7 @@ class _RootViewState extends State<RootView> {
           Scanner(),
           QRGeneratorSharePage(),
           HistoryView(),
-          ResultScreen("5634534534543"),
+          ResultScreen(""),
 
         ], onPageChanged: (index) {
           setState(() {
@@ -77,6 +77,7 @@ class _RootViewState extends State<RootView> {
         }, controller: pageViewController,),
       ),
       bottomNavigationBar: Container(
+        padding: EdgeInsets.only(bottom: 10.0),
         decoration: new BoxDecoration(
             color: Colors.white,
             borderRadius: new BorderRadius.all(const Radius.circular(0.0),)

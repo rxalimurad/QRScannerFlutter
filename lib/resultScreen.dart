@@ -14,9 +14,11 @@ class ResultScreen extends StatefulWidget {
   String qrData;
   bool isNRF = false;
   ResultScreen(this.qrData) {
-    DBHandler.addData(QRHistory(0, qrData, Util.getDateNow()));
+
     if (this.qrData.isEmpty)
     isNRF = true;
+    else
+      DBHandler.addData(QRHistory(0, qrData, Util.getDateNow()));
   }
   @override
   _ResultScreenState createState() => _ResultScreenState();

@@ -31,7 +31,13 @@ class DBHandler {
     db.close();
     return qrHistoryList;
   }
-
+  static Future<void> deleteData(int sr) async {
+    var db = await initDB();
+    var count = await db.rawDelete('DELETE FROM history WHERE sr = ?', ['$sr']);
+    assert(count == 1);
+    print(count);
+    db.close();
+  }
   static Future<void> addData(QRHistory entry) async {
     var db = await initDB();
     var _ = await db.rawQuery(
