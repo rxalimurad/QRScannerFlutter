@@ -41,9 +41,10 @@ class HistoryViewState extends State<HistoryView> {
         return ListView.builder(
           itemBuilder: (context, index) {
             return Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20))),
               padding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 0),
               child:  Material(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
                 elevation: 10.0,
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.white)),
@@ -55,7 +56,8 @@ class HistoryViewState extends State<HistoryView> {
                 );
                 },
                   onLongPress: (){
-                    displayModalBottomSheet(context);
+                    var srNo = c.qrHistoryList.value[index].sr;
+                    displayModalBottomSheet(context,srNo);
 
                   },
                   child: Center(
@@ -93,7 +95,7 @@ class HistoryViewState extends State<HistoryView> {
     );
   }
 
-  void displayModalBottomSheet(context) {
+  void displayModalBottomSheet(context, int sr) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -103,8 +105,12 @@ class HistoryViewState extends State<HistoryView> {
                 new ListTile(
                     leading: new Icon(Icons.delete),
                     title: new Text('Delete'),
-                    onTap: () {
-
+                    onTap: () async {
+                        await DBHandler.deleteData(sr);
+                        HistoryController c = Get.find();
+                        c.qrHistoryList.value = (await DBHandler.getData()).reversed.toList();
+                        print("Entry Deleted");
+                        Navigator.of(context).pop(false);
 
                     }),
                 new ListTile(

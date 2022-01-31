@@ -43,6 +43,8 @@ dependencies:
   salomon_bottom_bar: ^3.2.0
   dotted_border: ^2.0.0+2
   flutter_share: ^2.0.0
+  firebase_core:
+  cloud_firestore:
 
 
 
