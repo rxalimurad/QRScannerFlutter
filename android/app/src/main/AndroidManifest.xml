@@ -23,7 +23,7 @@
         </intent>
     </queries>
    <application
-        android:label="qr_scan_generator"
+        android:label="QR Scanner"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
