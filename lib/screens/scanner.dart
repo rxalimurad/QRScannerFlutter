@@ -1,14 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:qr_scan_generator/DBHandler.dart';
-import 'package:qr_scan_generator/resultScreen.dart';
+import 'package:qr_scan_generator/Screens/resultScreen.dart';
+import 'package:qr_scan_generator/Utilities/DataCacheManager.dart';
+import 'package:qr_scan_generator/controllers/controllers.dart';
 import 'package:r_scan/r_scan.dart';
 
-import 'DataCacheManager.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class _ScannerState extends State<Scanner> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  ColorController colorController = Get.find();
 
   @override
   void reassemble() {
@@ -38,7 +40,7 @@ class _ScannerState extends State<Scanner> {
           _buildQrView(context),
           Positioned(
             child: FloatingActionButton(
-              backgroundColor: Colors.red,
+              backgroundColor: colorController.primaryColor.value,
                 onPressed: () async {
                   await controller?.toggleFlash();
                   setState(() {});
@@ -49,6 +51,7 @@ class _ScannerState extends State<Scanner> {
           ),
           Positioned(
             child: FloatingActionButton(
+                backgroundColor: colorController.primaryColor.value,
                 onPressed: () async {
                   await controller?.flipCamera();
                   setState(() {});
@@ -59,6 +62,7 @@ class _ScannerState extends State<Scanner> {
           ),
           Positioned(
             child: FloatingActionButton(
+                backgroundColor: colorController.primaryColor.value,
                 onPressed: () async {
 
                   var _picker = ImagePicker();
@@ -104,7 +108,7 @@ class _ScannerState extends State<Scanner> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
+          borderColor: colorController.primaryColor.value,
           borderRadius: 40,
           borderLength: 40,
           borderWidth: 20,

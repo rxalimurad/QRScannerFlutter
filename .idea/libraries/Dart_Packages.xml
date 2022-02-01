@@ -107,6 +107,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flex_color_picker">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flex_color_picker-2.2.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter">
           <value>
             <list>
@@ -464,6 +471,13 @@
             </list>
           </value>
         </entry>
+        <entry key="toggle_switch">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/toggle_switch-1.4.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="typed_data">
           <value>
             <list>
@@ -566,6 +580,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flex_color_picker-2.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_share-2.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
@@ -613,6 +628,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/synchronized-3.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.3/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/toggle_switch-1.4.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.18/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher_android-6.0.14/lib" />

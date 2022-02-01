@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qr_scan_generator/resultScreen.dart';
-import 'package:qr_scan_generator/scanner.dart';
+import 'package:get/get.dart';
+import 'package:qr_scan_generator/Screens/qr_generator.dart';
+import 'package:qr_scan_generator/Screens/scanner.dart';
+import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:qr_scan_generator/screens/settings.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'generator.dart';
-import 'history.dart';
-
+import 'screens/history.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  Get.lazyPut(() => ColorController());
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -68,7 +68,7 @@ class _RootViewState extends State<RootView> {
           Scanner(),
           QRGeneratorSharePage(),
           HistoryView(),
-          ResultScreen(""),
+          Settings(),
 
         ], onPageChanged: (index) {
           setState(() {
