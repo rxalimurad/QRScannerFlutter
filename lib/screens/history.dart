@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:qr_scan_generator/resultScreen.dart';
-import 'CustomNavigation.dart';
-import 'DBHandler.dart';
+import 'package:qr_scan_generator/Screens/resultScreen.dart';
+import 'package:qr_scan_generator/Utilities/DBHandler.dart';
+import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
 
 class HistoryView extends StatefulWidget {
   @override
