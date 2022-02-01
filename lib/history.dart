@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_scan_generator/resultScreen.dart';
 import 'CustomNavigation.dart';
@@ -68,19 +69,22 @@ class HistoryViewState extends State<HistoryView> {
                             // ignore: invalid_use_of_protected_member
                             data: c.qrHistoryList.value[index].data,//textdata used to create QR code
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start ,
-                            children: [
-                              // ignore: invalid_use_of_protected_member
-                              Text(c.qrHistoryList.value[index].data, textAlign: TextAlign.left,
-                              style: TextStyle(color: Colors.black),),
-                              SizedBox(height: 10,),
-                              // ignore: invalid_use_of_protected_member
-                              Text(c.qrHistoryList.value[index].time,
-                                  style: TextStyle(color: Colors.grey)),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start ,
+                              children: [
+                                // ignore: invalid_use_of_protected_member
+                                Text(c.qrHistoryList.value[index].data, textAlign: TextAlign.left,
+                                style: TextStyle(color: Colors.black), maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                // ignore: invalid_use_of_protected_member
+                                Text(c.qrHistoryList.value[index].time,
+                                    style: TextStyle(color: Colors.grey)),
 
-                            ],),
-                              SizedBox(height: 100,)
+                              ],),
+                          ),
+                          SizedBox(height: 100,)
 
                         ]    ),
                       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:qr_scan_generator/resultScreen.dart';
 import 'package:qr_scan_generator/scanner.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -8,6 +10,7 @@ import 'history.dart';
 
 
 void main() {
+  Get.lazyPut(() => GeneratorController());
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
@@ -73,6 +76,11 @@ class _RootViewState extends State<RootView> {
         ], onPageChanged: (index) {
           setState(() {
             _selectedItemPosition = index;
+            var controller = Get.find<GeneratorController>();
+            controller.textData.value = "";
+            FocusScope.of(context).unfocus();
+
+
           });
         }, controller: pageViewController,),
       ),
@@ -88,6 +96,10 @@ class _RootViewState extends State<RootView> {
           _selectedItemPosition = index;
           pageViewController.animateToPage(index,  duration: const Duration(milliseconds: 200),
             curve: Curves.bounceIn,);
+          var controller = Get.find<GeneratorController>();
+          controller.textData.value = "";
+          FocusScope.of(context).unfocus();
+
         }),
         items: [
           SalomonBottomBarItem(
