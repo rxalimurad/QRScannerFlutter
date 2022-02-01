@@ -34,6 +34,7 @@ class SettingsState extends State<Settings> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Primary Color"),
+              SizedBox(height: 10,),
               GestureDetector(onTap: () {
                 showDialog(
                     barrierDismissible: false,
@@ -42,11 +43,17 @@ class SettingsState extends State<Settings> {
                       return buildColorPicker(context);
                     });
               }, child: Obx(() {
-                return Container(
-                  height: 50,
-                  color: controller.primaryColor.value,
-                );
+                return Material(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    elevation: 10.0,
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15)),color: controller.primaryColor.value,),
+                      height: 70,
+                      child: Center(child: Text("Select Primary Color")),
+                    ));
               })),
+              SizedBox(height: 10,),
               Padding(
                 padding:
                     EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
@@ -142,7 +149,7 @@ class SettingsState extends State<Settings> {
               Spacer(),
               Padding(
                 padding:
-                EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                    EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
                 child: Material(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   elevation: 10.0,
@@ -151,11 +158,14 @@ class SettingsState extends State<Settings> {
                       padding: EdgeInsets.only(
                           left: 20, right: 20, bottom: 20, top: 20),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("About", textScaleFactor: 2,),
+                          Text(
+                            "About",
+                            textScaleFactor: 1.5,
+                          ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Row(
                             children: [
@@ -169,8 +179,6 @@ class SettingsState extends State<Settings> {
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
-
-
                             ],
                           ),
                         ],
