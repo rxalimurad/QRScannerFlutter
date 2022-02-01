@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "829534486731",
+    "firebase_url": "https://qrscanner-4f82b-default-rtdb.firebaseio.com",
+    "project_id": "qrscanner-4f82b",
+    "storage_bucket": "qrscanner-4f82b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829534486731:android:de3562dd433d881c491b4e",
+        "android_client_info": {
+          "package_name": "com.volutiontech.qr_scan_generator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829534486731-lcgh7foiluk16s2todgj6a98tl07eioa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPZEEl_s9Fw_u_ittz5A8VSPkb9lOSk88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829534486731-lcgh7foiluk16s2todgj6a98tl07eioa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "829534486731-uo0ccvnhpk9ghkqncmmnq9nupku8btsv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.volutiontech.qascanner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

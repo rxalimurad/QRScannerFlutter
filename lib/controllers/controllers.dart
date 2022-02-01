@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 
 class ColorController extends GetxController {
-  var primaryColor = Colors.red.shade100.obs;
+  var primaryColor = Colors.red.shade900.obs;
+  var colorDialogColor = Colors.red.shade900.obs;
 
 }

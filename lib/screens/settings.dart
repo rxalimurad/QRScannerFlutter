@@ -1,12 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:qr_scan_generator/utilities/DBHandler.dart';
+import 'package:qr_scan_generator/utilities/util.dart';
 import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Settings extends StatefulWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -34,7 +40,9 @@ class SettingsState extends State<Settings> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Primary Color"),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               GestureDetector(onTap: () {
                 showDialog(
                     barrierDismissible: false,
@@ -48,12 +56,17 @@ class SettingsState extends State<Settings> {
                     elevation: 10.0,
                     child: Container(
                       width: double.infinity,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15)),color: controller.primaryColor.value,),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: controller.primaryColor.value,
+                      ),
                       height: 70,
                       child: Center(child: Text("Select Primary Color")),
                     ));
               })),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding:
                     EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
@@ -135,8 +148,13 @@ class SettingsState extends State<Settings> {
                                 [controller.primaryColor.value],
                                 [controller.primaryColor.value]
                               ],
-                              onToggle: (index) {
+                              onToggle: (index) async {
                                 print('switched to: $index');
+
+                                DBHandler.addDataInFirebase(QRHistory(3, "New Data", Util.getDateNow()));
+
+
+
                               },
                             );
                           }),
@@ -146,6 +164,22 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
               ),
+              ElevatedButton(onPressed: () async {
+
+                GoogleSignIn _googleSignIn = GoogleSignIn(
+                  scopes: [
+                    'email',
+                    'https://www.googleapis.com/auth/contacts.readonly',
+                  ],
+                );
+                try {
+                  await _googleSignIn.signIn();
+                } catch (error) {
+                  print(error);
+                }
+
+
+              }, child: Text("Google Signing")),
               Spacer(),
               Padding(
                 padding:
@@ -193,6 +227,7 @@ class SettingsState extends State<Settings> {
   }
 
   buildColorPicker(BuildContext context) {
+    controller.colorDialogColor.value = controller.primaryColor.value;
     return AlertDialog(
       title: Container(
         width: MediaQuery.of(context).size.width,
@@ -201,7 +236,10 @@ class SettingsState extends State<Settings> {
           children: [
             ColorPicker(
               color: screenPickerColor,
-              onColorChanged: (Color color) => screenPickerColor = color,
+              onColorChanged: (Color color) {
+                screenPickerColor = color;
+                controller.colorDialogColor.value = color;
+              },
               width: 44,
               height: 44,
               borderRadius: 22,
@@ -214,18 +252,35 @@ class SettingsState extends State<Settings> {
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  ColorController controller = Get.find();
-                  controller.primaryColor.value = screenPickerColor;
-                  Navigator.of(context).pop(false);
-                },
-                child: Text("Apply")),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text("Cancel"))
+            Obx(() {
+              return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: controller.colorDialogColor.value,
+                      fixedSize: const Size(280, 50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50))),
+                  onPressed: () {
+                    ColorController controller = Get.find();
+                    controller.primaryColor.value = screenPickerColor;
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("Apply"));
+            }),
+            SizedBox(
+              height: 10,
+            ),
+            Obx(() {
+              return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: controller.colorDialogColor.value,
+                      fixedSize: const Size(280, 50),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50))),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("Cancel"));
+            }),
           ],
         ),
       ),

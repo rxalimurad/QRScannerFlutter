@@ -1,7 +1,10 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class DBHandler {
+  FirebaseDatabase database = FirebaseDatabase.instance;
   static String createQuery =
       'CREATE TABLE history(sr INTEGER PRIMARY KEY, data TEXT, time TEXT)';
   static String getQuery = 'select * from history';
@@ -37,13 +40,32 @@ class DBHandler {
     assert(count == 1);
     print(count);
     db.close();
+    await removeDataFromFirebase("$sr");
   }
   static Future<void> addData(QRHistory entry) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int counter = (prefs.getInt('counter') ?? 0) + 1;
+    await prefs.setInt('counter', counter);
     var db = await initDB();
     var _ = await db.rawQuery(
-        "insert into history (data, time) values (\"${entry.data}\", \"${entry.time}\" )");
+        "insert into history (sr, data, time) values ($counter, \"${entry.data}\", \"${entry.time}\" )");
     db.close();
+   await addDataInFirebase(QRHistory(counter, entry.data, entry.time));
   }
+
+  static Future<void> removeDataFromFirebase(String sr) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Users/AliUser/$sr");
+    ref.remove();
+  }
+  static Future<void>  addDataInFirebase(QRHistory entry) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Users/AliUser/${entry.sr}");
+      await ref.set({
+      "sr": "${entry.sr}",
+      "data": "${entry.data}",
+      "date": "${entry.time}",
+     });
+  }
+
 }
 
 class QRHistory {
