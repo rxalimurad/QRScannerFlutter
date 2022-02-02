@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +10,7 @@ import 'package:qr_scan_generator/Screens/resultScreen.dart';
 import 'package:qr_scan_generator/Utilities/DataCacheManager.dart';
 import 'package:qr_scan_generator/controllers/controllers.dart';
 import 'package:r_scan/r_scan.dart';
+import 'package:vibration/vibration.dart';
 
 
 class Scanner extends StatefulWidget {
@@ -71,6 +73,10 @@ class _ScannerState extends State<Scanner> {
                       await _picker.pickImage(source: ImageSource.gallery);
                   final result = await RScan.scanImagePath(image!.path);
                   if (result.message == null) {
+                    if (await Vibration.hasVibrator()) {
+                      Vibration.vibrate();
+                    }
+                    FlutterBeep.beep(false);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>  ResultScreen("")),
@@ -78,6 +84,10 @@ class _ScannerState extends State<Scanner> {
                     DataCacheManager().showingPopup = true;
 
                   } else {
+                    if (await Vibration.hasVibrator()) {
+                      Vibration.vibrate();
+                    }
+                    FlutterBeep.beep();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>  ResultScreen("${result.message}")),
@@ -126,8 +136,12 @@ class _ScannerState extends State<Scanner> {
     setState(() {
       this.controller = controller;
     });
-  controller.scannedDataStream.listen((scanData) {
+  controller.scannedDataStream.listen((scanData) async {
     if (!DataCacheManager().showingPopup) {
+      if (await Vibration.hasVibrator()) {
+           Vibration.vibrate();
+        }
+      FlutterBeep.beep();
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>  ResultScreen("${scanData.code}")),
