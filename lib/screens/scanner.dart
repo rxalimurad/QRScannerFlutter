@@ -73,7 +73,7 @@ class _ScannerState extends State<Scanner> {
                       await _picker.pickImage(source: ImageSource.gallery);
                   final result = await RScan.scanImagePath(image!.path);
                   if (result.message == null) {
-                    if (await Vibration.hasVibrator()) {
+                    if (await Vibration.hasVibrator() ?? false) {
                       Vibration.vibrate();
                     }
                     FlutterBeep.beep(false);
@@ -84,7 +84,7 @@ class _ScannerState extends State<Scanner> {
                     DataCacheManager().showingPopup = true;
 
                   } else {
-                    if (await Vibration.hasVibrator()) {
+                    if (await Vibration.hasVibrator() ?? false) {
                       Vibration.vibrate();
                     }
                     FlutterBeep.beep();
@@ -138,7 +138,7 @@ class _ScannerState extends State<Scanner> {
     });
   controller.scannedDataStream.listen((scanData) async {
     if (!DataCacheManager().showingPopup) {
-      if (await Vibration.hasVibrator()) {
+      if (await Vibration.hasVibrator() ?? false) {
            Vibration.vibrate();
         }
       FlutterBeep.beep();
