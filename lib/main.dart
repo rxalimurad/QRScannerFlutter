@@ -1,22 +1,29 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qr_scan_generator/resultScreen.dart';
-import 'package:qr_scan_generator/scanner.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:qr_scan_generator/screens/history.dart';
+import 'package:qr_scan_generator/screens/qr_generator.dart';
+import 'package:qr_scan_generator/screens/scanner.dart';
+import 'package:qr_scan_generator/screens/settings.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'generator.dart';
-import 'history.dart';
 
 
-void main() {
+void main()async {
+  Get.lazyPut(() => GeneratorController());
+  Get.lazyPut(() => ColorController());
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -68,15 +75,21 @@ class _RootViewState extends State<RootView> {
           Scanner(),
           QRGeneratorSharePage(),
           HistoryView(),
-          ResultScreen("5634534534543"),
+          Settings(),
 
         ], onPageChanged: (index) {
           setState(() {
             _selectedItemPosition = index;
+            var controller = Get.find<GeneratorController>();
+            controller.textData.value = "";
+            FocusScope.of(context).unfocus();
+
+
           });
         }, controller: pageViewController,),
       ),
       bottomNavigationBar: Container(
+        padding: EdgeInsets.only(bottom: 10.0),
         decoration: new BoxDecoration(
             color: Colors.white,
             borderRadius: new BorderRadius.all(const Radius.circular(0.0),)
@@ -87,6 +100,10 @@ class _RootViewState extends State<RootView> {
           _selectedItemPosition = index;
           pageViewController.animateToPage(index,  duration: const Duration(milliseconds: 200),
             curve: Curves.bounceIn,);
+          var controller = Get.find<GeneratorController>();
+          controller.textData.value = "";
+          FocusScope.of(context).unfocus();
+
         }),
         items: [
           SalomonBottomBarItem(
