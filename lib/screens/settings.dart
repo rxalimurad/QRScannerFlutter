@@ -13,6 +13,7 @@ import 'package:toggle_switch/toggle_switch.dart';
 class Settings extends StatefulWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  var email = "";
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -39,6 +40,7 @@ class SettingsState extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(widget.email),
               Text("Primary Color"),
               SizedBox(
                 height: 10,
@@ -173,7 +175,11 @@ class SettingsState extends State<Settings> {
                   ],
                 );
                 try {
-                  await _googleSignIn.signIn();
+                 var infoGoogle =  await _googleSignIn.signIn();
+                 widget.email = infoGoogle?.email ?? "";
+                 setState(() {
+
+                 });
                 } catch (error) {
                   print(error);
                 }
