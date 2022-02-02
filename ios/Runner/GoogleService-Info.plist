@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>829534486731-uo0ccvnhpk9ghkqncmmnq9nupku8btsv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.829534486731-uo0ccvnhpk9ghkqncmmnq9nupku8btsv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA-YrR_WmVUiVAyrqU__OVaDPjj0kVEjX0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>829534486731</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.volutiontech.qascanner</string>
+	<key>PROJECT_ID</key>
+	<string>qrscanner-4f82b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>qrscanner-4f82b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:829534486731:ios:45bebe9433e6b1d5491b4e</string>
+	<key>DATABASE_URL</key>
+	<string>https://qrscanner-4f82b-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
