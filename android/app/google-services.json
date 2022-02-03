@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "829534486731-18o3ngr4cvf4s0qcsjo28sq18um9hvff.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.volutiontech.qr_scan_generator",
+            "certificate_hash": "a7970a7c974fbe92242a89fd98af9c2d42c8e3b5"
+          }
+        },
+        {
           "client_id": "829534486731-lcgh7foiluk16s2todgj6a98tl07eioa.apps.googleusercontent.com",
           "client_type": 3
         }

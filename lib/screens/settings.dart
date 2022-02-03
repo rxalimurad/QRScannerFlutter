@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 class Settings extends StatefulWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -29,9 +27,21 @@ class SettingsState extends State<Settings> {
     // TODO: implement build
     return Scaffold(
         appBar: CustomNavigaton(
-          title: Text(
-            "Settings",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+          title: Stack(
+            children: [
+              Text("Settings",style: TextStyle(color: Colors.white, fontSize: 30),),
+              Positioned(left: 0, child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage('https://googleflutter.com/sample_image.jpg'),
+                      fit: BoxFit.fill
+                  ),
+                ),
+              ),)
+            ]
           ),
         ),
         body:  Padding(
@@ -164,8 +174,23 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
               ),
-
-              Spacer(),
+              InkWell(
+                onTap: () {},
+                child: Ink(
+                  color: Color(0xFF397AF3),
+                  child: Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Image.asset("assets/googleicon.png", width: 20, height: 20,), // <-- Use 'Image.asset(...)' here
+                        SizedBox(width: 12),
+                        Text('Sign in with Google', style: TextStyle(color: Colors.white),),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding:
                     EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),

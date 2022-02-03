@@ -51,6 +51,7 @@ dependencies:
   firebase_database:
   shared_preferences: ^2.0.12
   google_sign_in: ^5.2.3
+  sign_in_with_apple: ^3.3.0
   flutter_beep: ^1.0.0
   vibration: ^1.7.4-nullsafety.0
 

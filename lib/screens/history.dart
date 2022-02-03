@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_scan_generator/Screens/resultScreen.dart';
@@ -36,7 +37,7 @@ class HistoryViewState extends State<HistoryView> {
           title:  Text(
             "History",
             style: TextStyle(color: Colors.white, fontSize: 30),
-          ),),
+          )),
 
       body: Obx(() {
         return ListView.builder(
