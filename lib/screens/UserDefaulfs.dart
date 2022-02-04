@@ -1,4 +1,4 @@
-import 'package:qr_scan_generator/utilities/DataCacheManager.dart';
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDefaults {

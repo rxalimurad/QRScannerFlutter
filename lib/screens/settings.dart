@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:qr_scan_generator/controllers/controllers.dart';
-import 'package:qr_scan_generator/screens/UserDefaulfs.dart';
-import 'package:qr_scan_generator/utilities/DBHandler.dart';
-import 'package:qr_scan_generator/utilities/util.dart';
-import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
+import 'package:QR_Scanner/controllers/controllers.dart';
+import 'package:QR_Scanner/screens/UserDefaulfs.dart';
+import 'package:QR_Scanner/utilities/DBHandler.dart';
+import 'package:QR_Scanner/utilities/util.dart';
+import 'package:QR_Scanner/widgets/CustomNavigation.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Settings extends StatefulWidget {

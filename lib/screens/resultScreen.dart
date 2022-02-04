@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:qr_scan_generator/utilities/DBHandler.dart';
-import 'package:qr_scan_generator/Utilities/DataCacheManager.dart';
-import 'package:qr_scan_generator/Utilities/util.dart';
-import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
+import 'package:QR_Scanner/utilities/DBHandler.dart';
+import 'package:QR_Scanner/Utilities/DataCacheManager.dart';
+import 'package:QR_Scanner/Utilities/util.dart';
+import 'package:QR_Scanner/widgets/CustomNavigation.dart';
 
 class ResultScreen extends StatefulWidget {
   String qrData;

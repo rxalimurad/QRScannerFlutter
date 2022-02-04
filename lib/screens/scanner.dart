@@ -6,9 +6,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:qr_scan_generator/Screens/resultScreen.dart';
-import 'package:qr_scan_generator/Utilities/DataCacheManager.dart';
-import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:QR_Scanner/Screens/resultScreen.dart';
+import 'package:QR_Scanner/Utilities/DataCacheManager.dart';
+import 'package:QR_Scanner/controllers/controllers.dart';
 import 'package:r_scan/r_scan.dart';
 import 'package:vibration/vibration.dart';
 

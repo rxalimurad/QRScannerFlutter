@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:qr_scan_generator/Screens/resultScreen.dart';
-import 'package:qr_scan_generator/controllers/controllers.dart';
-import 'package:qr_scan_generator/utilities/DBHandler.dart';
-import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
+import 'package:QR_Scanner/Screens/resultScreen.dart';
+import 'package:QR_Scanner/controllers/controllers.dart';
+import 'package:QR_Scanner/utilities/DBHandler.dart';
+import 'package:QR_Scanner/widgets/CustomNavigation.dart';
 
 class HistoryView extends StatefulWidget {
   @override
