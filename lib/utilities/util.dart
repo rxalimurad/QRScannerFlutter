@@ -8,12 +8,20 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Util {
+
+
+
  static String getDateNow() {
    final DateTime now = DateTime.now();
    final DateFormat formatter = DateFormat('MMM dd, yyyy hh:mm a');
    final String formatted = formatter.format(now);
    return formatted;
  }
+
+ static DateTime getDateObj(String time) {
+   return DateFormat('MMM dd, yyyy hh:mm a').parse(time);
+ }
+
  static Future launchURL(String _url) async {
    if (!await launch(_url)) throw 'Could not launch $_url';
    return;
@@ -33,7 +41,7 @@ class Util {
       actions.add(ActionObj("Copy to Clipboard", ActionsEnum.copy, Icons.copy),);
 
       if (GetUtils.isURL(resultStr)) {
-        actions.add(ActionObj("Open URL", ActionsEnum.copy, Icons.link),);
+        actions.add(ActionObj("Open URL", ActionsEnum.openUrl, Icons.link),);
       }
       if (GetUtils.isEmail(resultStr)) {
         actions.add(ActionObj("Send Email", ActionsEnum.email, Icons.email),);

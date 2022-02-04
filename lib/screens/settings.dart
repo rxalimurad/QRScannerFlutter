@@ -1,19 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:qr_scan_generator/screens/UserDefaulfs.dart';
 import 'package:qr_scan_generator/utilities/DBHandler.dart';
 import 'package:qr_scan_generator/utilities/util.dart';
 import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Settings extends StatefulWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  var email = "";
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -24,23 +23,42 @@ class Settings extends StatefulWidget {
 class SettingsState extends State<Settings> {
   var screenPickerColor = Colors.yellow.shade50;
   ColorController controller = Get.find();
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    // if (UserDefaults.email.isNotEmpty) {
+    //   signIn();
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         appBar: CustomNavigaton(
-          title: Text(
-            "Settings",
-            style: TextStyle(color: Colors.white, fontSize: 30),
-          ),
+          title: Row(children: [
+            Text(
+              "Settings",
+              style: TextStyle(color: Colors.white, fontSize: 30),
+            ),
+            Container(
+              child: Obx(() {
+                return Text(controller.email.value);
+              }),
+            )
+          ]),
         ),
         body: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.email),
               Text("Primary Color"),
               SizedBox(
                 height: 10,
@@ -153,10 +171,8 @@ class SettingsState extends State<Settings> {
                               onToggle: (index) async {
                                 print('switched to: $index');
 
-                                DBHandler.addDataInFirebase(QRHistory(3, "New Data", Util.getDateNow()));
-
-
-
+                                DBHandler.addDataInFirebase(QRHistory(
+                                    3, "New Data", Util.getDateNow()));
                               },
                             );
                           }),
@@ -166,27 +182,35 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
               ),
-              ElevatedButton(onPressed: () async {
-
-                GoogleSignIn _googleSignIn = GoogleSignIn(
-                  scopes: [
-                    'email',
-                    'https://www.googleapis.com/auth/contacts.readonly',
-                  ],
-                );
-                try {
-                 var infoGoogle =  await _googleSignIn.signIn();
-                 widget.email = infoGoogle?.email ?? "";
-                 setState(() {
-
-                 });
-                } catch (error) {
-                  print(error);
-                }
-
-
-              }, child: Text("Google Signing")),
-              Spacer(),
+              InkWell(
+                onTap: () {
+                  _handleSignIn();
+                },
+                child: Ink(
+                  color: Color(0xFF397AF3),
+                  child: Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/googleicon.png",
+                          width: 20,
+                          height: 20,
+                        ),
+                        // <-- Use 'Image.asset(...)' here
+                        SizedBox(width: 12),
+                        Obx(() {
+                          return Text(
+                            (controller.email.value.isEmpty) ? controller.googleBtnText.value : "Log Out" + " (${controller.googleName})",
+                            style: TextStyle(color: Colors.white),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding:
                     EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
@@ -291,5 +315,37 @@ class SettingsState extends State<Settings> {
         ),
       ),
     );
+  }
+
+  signIn() async {
+    try {
+      var info = await _googleSignIn.signIn();
+      controller.email.value = info?.email ?? "";
+      controller.googleName = info?.displayName ?? "";
+      controller.googleBtnText.value =
+          "Log Out" + " (${controller.googleName})";
+      UserDefaults.email = controller.email.value;
+      UserDefaults.userName = controller.googleName;
+    } catch (error) {
+      print(error);
+    }
+  }
+  logout() async {
+    try {
+      await _googleSignIn.signOut();
+      controller.email.value = "";
+      controller.googleBtnText.value = googleBtnTxt;
+      UserDefaults.email = "";
+      UserDefaults.userName = "";
+    } catch (error) {
+      print(error);
+    }
+  }
+  Future<void> _handleSignIn() async {
+    if (controller.email.value.isEmpty) {
+      await signIn();
+    } else {
+     await logout();
+    }
   }
 }

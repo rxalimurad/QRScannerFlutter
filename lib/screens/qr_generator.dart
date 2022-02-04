@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qr_scan_generator/controllers/controllers.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../widgets/CustomNavigation.dart';
@@ -22,6 +23,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
   String textdata = '';
   final textcontroller = TextEditingController();
   File? file;
+  ColorController c = Get.find();
 
   @override
   void initState() {
@@ -80,7 +82,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
                 child: Center(child: Text('Create QR Code')),
               ),
               style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary:  c.primaryColor.value,
                   fixedSize: const Size(300, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50))),
@@ -96,7 +98,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
             ElevatedButton(
               child: Text('Share'),
               style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  primary:  c.primaryColor.value,
                   fixedSize: const Size(300, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50))),

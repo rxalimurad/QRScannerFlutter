@@ -4,13 +4,21 @@ import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:qr_scan_generator/screens/UserDefaulfs.dart';
 import 'package:qr_scan_generator/screens/history.dart';
 import 'package:qr_scan_generator/screens/qr_generator.dart';
 import 'package:qr_scan_generator/screens/scanner.dart';
 import 'package:qr_scan_generator/screens/settings.dart';
+import 'package:qr_scan_generator/utilities/DataCacheManager.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+setControllerFromCache(){
+  ColorController controller = Get.find();
+  controller.email.value = UserDefaults.email;
+  controller.googleName = UserDefaults.userName;
 
+}
 void main()async {
   Get.lazyPut(() => GeneratorController());
   Get.lazyPut(() => ColorController());
@@ -19,7 +27,12 @@ void main()async {
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  DataCacheManager.prefs = await SharedPreferences.getInstance();
+  setControllerFromCache();
   runApp(const MyApp());
+
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -40,6 +53,7 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
 }
 
 class RootView extends StatefulWidget {
@@ -52,12 +66,10 @@ class RootView extends StatefulWidget {
 class _RootViewState extends State<RootView> {
   final pageViewController = PageController();
   int _selectedItemPosition = 0;
-
   @override
   void initState() {
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,4 +144,7 @@ class _RootViewState extends State<RootView> {
 
     );
   }
+
+
+
 }
