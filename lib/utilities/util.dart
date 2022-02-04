@@ -17,6 +17,11 @@ class Util {
    final String formatted = formatter.format(now);
    return formatted;
  }
+
+ static DateTime getDateObj(String time) {
+   return DateFormat('MMM dd, yyyy hh:mm a').parse(time);
+ }
+
  static Future launchURL(String _url) async {
    if (!await launch(_url)) throw 'Could not launch $_url';
    return;

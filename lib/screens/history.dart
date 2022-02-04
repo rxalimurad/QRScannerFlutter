@@ -99,7 +99,7 @@ class HistoryViewState extends State<HistoryView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Get.find<ColorController>().primaryColor.value,
         onPressed: () async {
-        await DBHandler.syncData();
+        await DBHandler.syncData(context);
       },child: Icon(Icons.sync),),
     );
   }

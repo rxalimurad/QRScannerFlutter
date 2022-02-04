@@ -94,9 +94,6 @@ class _ScannerState extends State<Scanner> {
                     );
                     DataCacheManager().showingPopup = true;
                   }
-
-
-
                 },
                 child: (Icon(Icons.photo, size: 30))),
             left: (MediaQuery.of(context).size.width / 2) - 15.0,
