@@ -53,6 +53,9 @@ dependencies:
   google_sign_in: ^5.2.3
   flutter_beep: ^1.0.0
   vibration: ^1.7.4-nullsafety.0
+  crypto: ^3.0.1
+  flutter_easyloading: ^3.0.3
+  admob_flutter: ^2.0.0
 
 
 

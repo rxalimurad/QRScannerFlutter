@@ -5,14 +5,15 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:QR_Scanner/controllers/controllers.dart';
 
-class CustomNavigaton extends StatelessWidget implements PreferredSizeWidget {
+class CustomNavigation extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
   final double barHeight = 40.0;
+   bool isSettingScreen = false;
 
-  CustomNavigaton({Key? key, required this.title}) : super(key: key);
+  CustomNavigation({Key? key, required this.title, this.isSettingScreen = false}) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + 100.0);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight + 50.0);
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +23,54 @@ class CustomNavigaton extends StatelessWidget implements PreferredSizeWidget {
         child: ClipPath(
           clipper: WaveClip(),
           child: Obx(() {
-            return Container(
-              color: controller.primaryColor.value,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  title,
-                ],
-              ),
+            return Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Container(
+                    color: controller.primaryColor.value,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        title,
+                      ],
+                    ),
+                  ),
+                ),
+
+                Positioned(child:
+                ClipOval(
+
+                  child: Visibility(
+                    visible: isSettingScreen,
+                    child: Obx(() {
+                      return  Container(
+                          width: 60.0,
+                          height: 60.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.contain,
+                                  image: new NetworkImage(
+                                      controller.picUrl.value)
+                              )
+                          ));
+
+
+
+                    }),
+                  ),
+                ),
+                  bottom: 10, right: 20, top: 10,),
+
+              ],
             );
           }),
         ),
-        preferredSize: Size.fromHeight(kToolbarHeight + 100));
+        preferredSize: Size.fromHeight(kToolbarHeight + 20));
   }
 }
 
