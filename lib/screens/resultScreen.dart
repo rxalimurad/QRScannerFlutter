@@ -17,7 +17,7 @@ class ResultScreen extends StatefulWidget {
     if (this.qrData.isEmpty)
     isNRF = true;
     else
-      DBHandler.addData(QRHistory(0, qrData, Util.getDateNow()));
+      DBHandler.addData(QRHistory("", qrData, Util.getDateNow()));
   }
   @override
   _ResultScreenState createState() => _ResultScreenState();
@@ -32,7 +32,7 @@ class _ResultScreenState extends State<ResultScreen> {
     return WillPopScope(
       onWillPop: _onBackPress,
       child: Scaffold(
-        appBar: CustomNavigaton(
+        appBar: CustomNavigation(
             title: Row(children: [
               IconButton(onPressed: () {
                 _onBackPress();
@@ -53,7 +53,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 strokeWidth: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: SelectableText(widget.isNRF? "Not QR code found." : widget.qrData),
+                  child: SelectableText(widget.isNRF? "No QR code found." : widget.qrData),
                 ),
               ),
             ),

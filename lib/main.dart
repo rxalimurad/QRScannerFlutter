@@ -1,10 +1,15 @@
+import 'dart:io';
+
+import 'package:QR_Scanner/utilities/util.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:QR_Scanner/controllers/controllers.dart';
-import 'package:QR_Scanner/screens/UserDefaulfs.dart';
+import 'package:QR_Scanner/screens/UserDefaults.dart';
 import 'package:QR_Scanner/screens/history.dart';
 import 'package:QR_Scanner/screens/qr_generator.dart';
 import 'package:QR_Scanner/screens/scanner.dart';
@@ -17,12 +22,21 @@ setControllerFromCache(){
   ColorController controller = Get.find();
   controller.email.value = UserDefaults.email;
   controller.googleName = UserDefaults.userName;
+  controller.picUrl.value = UserDefaults.picURL;
+  if (UserDefaults.primaryColor.isNotEmpty)
+    controller.primaryColor.value = Util.fromHex(UserDefaults.primaryColor);
+  controller.lastSyncAt.value = UserDefaults.lastSyncAt;
+  EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.wave;
 
 }
 void main()async {
   Get.lazyPut(() => GeneratorController());
   Get.lazyPut(() => ColorController());
   WidgetsFlutterBinding.ensureInitialized();
+  Admob.initialize();
+  if (Platform.isIOS)
+  await Admob.requestTrackingAuthorization();
+
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +62,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
             ),
             home: const RootView(),
+            builder: EasyLoading.init(),
           );
 
       },

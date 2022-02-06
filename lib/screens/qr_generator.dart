@@ -37,7 +37,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
   Widget build(BuildContext context) {
     var controller = Get.find<GeneratorController>();
     return Scaffold(
-      appBar: CustomNavigaton(
+      appBar: CustomNavigation(
         title: Text(
           "Create",
           style: TextStyle(color: Colors.white, fontSize: 30),
