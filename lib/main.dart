@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:QR_Scanner/utilities/util.dart';
-import 'package:admob_flutter/admob_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,9 +32,9 @@ void main()async {
   Get.lazyPut(() => GeneratorController());
   Get.lazyPut(() => ColorController());
   WidgetsFlutterBinding.ensureInitialized();
-  Admob.initialize();
-  if (Platform.isIOS)
-  await Admob.requestTrackingAuthorization();
+  // Admob.initialize();
+  // if (Platform.isIOS)
+  // await Admob.requestTrackingAuthorization();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
