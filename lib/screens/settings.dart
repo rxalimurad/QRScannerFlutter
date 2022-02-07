@@ -357,17 +357,26 @@ class SettingsState extends State<Settings> {
     }
   }
   Future<void> _handleSignIn() async {
-    if (controller.email.value.isEmpty) {
-      EasyLoading.show(status: "Signing in...", maskType: EasyLoadingMaskType.black);
-      await signIn();
-      // controller.email.value = "rxalimurad@gmail.com";
-      EasyLoading.dismiss();
-    } else {
-      EasyLoading.show(status: "Logging out...", maskType: EasyLoadingMaskType.black);
+    if (!await Util.isInternetAvailable()) {
 
-      await logout();
-      // controller.email.value = "";
-      EasyLoading.dismiss();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please connect internet before syncing.')),
+        );
+      return;
+    } else {
+      if (controller.email.value.isEmpty) {
+        EasyLoading.show(status: "Signing in...", maskType: EasyLoadingMaskType.black);
+        await signIn();
+        // controller.email.value = "rxalimurad@gmail.com";
+        EasyLoading.dismiss();
+      } else {
+        EasyLoading.show(status: "Logging out...", maskType: EasyLoadingMaskType.black);
+
+        await logout();
+        // controller.email.value = "";
+        EasyLoading.dismiss();
+      }
     }
+
   }
 }
