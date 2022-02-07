@@ -3,7 +3,6 @@ import 'package:QR_Scanner/utilities/util.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:QR_Scanner/Screens/resultScreen.dart';
@@ -24,19 +23,9 @@ class HistoryViewState extends State<HistoryView> {
     Get.lazyPut(()=>HistoryController());
     setupDB();
     super.initState() ;
-    syncDataIfNeeded();
-    
   }
 
-  syncDataIfNeeded() {
-    var lastSyncDate = UserDefaults.lastSyncAt;
-    if (lastSyncDate.isNotEmpty) {
-      var diff = Util.getDateObj(lastSyncDate).difference(DateTime.now());
-      if (((diff.inHours >  12)) || (diff.inHours < -12 )) {
-        DBHandler.syncData();
-      }
-    }
-  }
+
   
   Future<void> setupDB() async {
     HistoryController c = Get.find();

@@ -1,4 +1,5 @@
 
+import 'package:QR_Scanner/utilities/util.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,25 +7,31 @@ import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:QR_Scanner/utilities/DBHandler.dart';
 import 'package:QR_Scanner/Utilities/DataCacheManager.dart';
-import 'package:QR_Scanner/Utilities/util.dart';
 import 'package:QR_Scanner/widgets/CustomNavigation.dart';
 
 class ResultScreen extends StatefulWidget {
   String qrData;
   bool isNRF = false;
   ResultScreen(this.qrData) {
-
     if (this.qrData.isEmpty)
     isNRF = true;
-    else
-      DBHandler.addData(QRHistory("", qrData, Util.getDateNow()));
+
   }
   @override
   _ResultScreenState createState() => _ResultScreenState();
 }
 
 class _ResultScreenState extends State<ResultScreen> {
+
   late List <ActionObj>  data;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Util.syncDataIfNeeded();
+  }
+
   @override
   Widget build(BuildContext context) {
     data =  Util.getActionsData(widget.qrData);

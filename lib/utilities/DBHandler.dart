@@ -112,6 +112,13 @@ class DBHandler {
       );
       return;
     }
+    if (!await Util.isInternetAvailable()) {
+      if (context != null)
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please connect internet before syncing.')),
+      );
+      return;
+    }
 
 
 

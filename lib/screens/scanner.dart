@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:QR_Scanner/screens/UserDefaults.dart';
+import 'package:QR_Scanner/utilities/DBHandler.dart';
+import 'package:QR_Scanner/utilities/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -50,7 +52,7 @@ class _ScannerState extends State<Scanner> {
                 },
                 child: (Icon(Icons.flash_on, size: 30))),
             right: 20,
-            bottom: 10,
+            bottom: 20,
           ),
           Positioned(
             child: FloatingActionButton(
@@ -97,6 +99,8 @@ class _ScannerState extends State<Scanner> {
                     if (UserDefaults.isSoundON) {
                       FlutterBeep.beep();
                     }
+                    if ("${result.message}".isNotEmpty)
+                      DBHandler.addData(QRHistory("", "${result.message}", Util.getDateNow()));
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>  ResultScreen("${result.message}")),
@@ -152,6 +156,8 @@ class _ScannerState extends State<Scanner> {
       if (UserDefaults.isSoundON) {
         FlutterBeep.beep();
       }
+      if ("${scanData.code}".isNotEmpty)
+        DBHandler.addData(QRHistory("", "${scanData.code}", Util.getDateNow()));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>  ResultScreen("${scanData.code}")),

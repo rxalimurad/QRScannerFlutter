@@ -332,7 +332,7 @@ class SettingsState extends State<Settings> {
         UserDefaults.picURL = controller.picUrl.value;
         print("Photo URL ${controller.picUrl.value}");
         print(",,, call from try");
-        await DBHandler.syncData();
+        await DBHandler.syncData(context: context);
 
       }
     } catch (error) {
@@ -342,7 +342,7 @@ class SettingsState extends State<Settings> {
   }
   logout() async {
     try {
-      await DBHandler.syncData();
+      await DBHandler.syncData(context: context);
       await _googleSignIn.signOut();
       controller.email.value = "";
       controller.googleBtnText.value = googleBtnTxt;
