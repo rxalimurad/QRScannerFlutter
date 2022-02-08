@@ -93,7 +93,7 @@ class Util {
     var lastSyncDate = UserDefaults.lastSyncAt;
     if (lastSyncDate.isNotEmpty) {
       var diff = Util.getDateObj(lastSyncDate).difference(DateTime.now());
-      if (((diff.inMinutes >  2)) || (diff.inMinutes < -2 )) {
+      if (((diff.inHours >  24)) || (diff.inHours < -24 )) {
         DBHandler.syncData();
       }
     }
