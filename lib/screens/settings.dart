@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,10 @@ import 'package:QR_Scanner/screens/UserDefaults.dart';
 import 'package:QR_Scanner/utilities/DBHandler.dart';
 import 'package:QR_Scanner/utilities/util.dart';
 import 'package:QR_Scanner/widgets/CustomNavigation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+import '../constants.dart';
 
 class Settings extends StatefulWidget {
 
@@ -23,7 +25,8 @@ class Settings extends StatefulWidget {
 
 class SettingsState extends State<Settings> {
   var screenPickerColor = Colors.yellow.shade50;
-  ColorController controller = Get.find();
+  GoogleSignInController controller = Get.find();
+  ColorController colorController = Get.find();
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -46,7 +49,7 @@ class SettingsState extends State<Settings> {
         appBar: CustomNavigation(
           isSettingScreen: true,
           title: Text(
-            "Settings",
+            DataCacheManager.language.settings,
             style: TextStyle(color: Colors.white, fontSize: 30),
           ),
         ),
@@ -71,10 +74,10 @@ class SettingsState extends State<Settings> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: controller.primaryColor.value,
+                          color: colorController.primaryColor.value,
                         ),
                         height: 70,
-                        child: Center(child: Text("Select Primary Color", style: TextStyle(color: Colors.white),)),
+                        child: Center(child: Text(DataCacheManager.language.selectPrimaryColor, style: TextStyle(color: Colors.white),)),
                       ));
                 })),
                 SizedBox(
@@ -97,7 +100,7 @@ class SettingsState extends State<Settings> {
                               width: 20,
                             ),
                             Text(
-                              "Vibration",
+                              DataCacheManager.language.vibration,
                               style: TextStyle(color: Colors.black),
                             ),
                             Spacer(),
@@ -110,10 +113,10 @@ class SettingsState extends State<Settings> {
                                 inactiveBgColor: Colors.grey,
                                 inactiveFgColor: Colors.white,
                                 totalSwitches: 2,
-                                labels: ['ON', 'OFF'],
+                                labels: [DataCacheManager.language.on, DataCacheManager.language.off],
                                 activeBgColors: [
-                                  [controller.primaryColor.value],
-                                  [controller.primaryColor.value]
+                                  [colorController.primaryColor.value],
+                                  [colorController.primaryColor.value]
                                 ],
                                 onToggle: (index) {
                                   UserDefaults.isVibrationON = (index == 0);
@@ -143,7 +146,7 @@ class SettingsState extends State<Settings> {
                               width: 20,
                             ),
                             Text(
-                              "Sound",
+                              DataCacheManager.language.sound,
                               style: TextStyle(color: Colors.black),
                             ),
                             Spacer(),
@@ -156,10 +159,10 @@ class SettingsState extends State<Settings> {
                                 inactiveBgColor: Colors.grey,
                                 inactiveFgColor: Colors.white,
                                 totalSwitches: 2,
-                                labels: ['ON', 'OFF'],
+                                labels: [DataCacheManager.language.on, DataCacheManager.language.off],
                                 activeBgColors: [
-                                  [controller.primaryColor.value],
-                                  [controller.primaryColor.value]
+                                  [colorController.primaryColor.value],
+                                  [colorController.primaryColor.value]
                                 ],
                                 onToggle: (index) async {
                                   UserDefaults.isSoundON = (index == 0);
@@ -175,32 +178,35 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
                 Spacer(),
-                InkWell(
-                  onTap: () {
-                    _handleSignIn();
-                  },
-                  child: Center(
-                    child: Ink(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Color(0xFF397AF3),),
-                      child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/googleicon.png",
-                              width: 20,
-                              height: 20,
-                            ),
-                            // <-- Use 'Image.asset(...)' here
-                            SizedBox(width: 12),
-                            Obx(() {
-                              return Text(
-                                (controller.email.value.isEmpty) ? controller.googleBtnText.value : "Log Out" + " (${controller.googleName})",
-                                style: TextStyle(color: Colors.white),
-                              );
-                            }),
-                          ],
+                Visibility(
+                  visible: enableCloudBackup,
+                  child: InkWell(
+                    onTap: () {
+                      _handleSignIn();
+                    },
+                    child: Center(
+                      child: Ink(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Color(0xFF397AF3),),
+                        child: Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/googleicon.png",
+                                width: 20,
+                                height: 20,
+                              ),
+                              // <-- Use 'Image.asset(...)' here
+                              SizedBox(width: 12),
+                              Obx(() {
+                                return Text(
+                                  (controller.email.value.isEmpty) ? controller.googleBtnText.value : DataCacheManager.language.logout + " (${controller.googleName})",
+                                  style: TextStyle(color: Colors.white),
+                                );
+                              }),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -221,7 +227,7 @@ class SettingsState extends State<Settings> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "About",
+                              DataCacheManager.language.about,
                               textScaleFactor: 1.5,
                             ),
                             SizedBox(
@@ -234,9 +240,15 @@ class SettingsState extends State<Settings> {
                                   width: 20,
                                 ),
                                 Expanded(
-                                  child: Text(
-                                    "Application Version 1.0.1\nBuild No 985665\nRelease Date 23 Jan, 2020",
-                                    style: TextStyle(color: Colors.black),
+                                  child: FutureBuilder(
+                                    future: PackageInfo.fromPlatform(),
+                                    builder: (w,e){
+
+                                      return Text(
+                                        "${DataCacheManager.language.applicationVerison} ${(e.data as PackageInfo).version}\n${DataCacheManager.language.buildNo} ${(e.data as PackageInfo).buildNumber}\n${DataCacheManager.language.releaseDate} $releaseDate",
+                                        style: TextStyle(color: Colors.black),
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -254,7 +266,7 @@ class SettingsState extends State<Settings> {
   }
 
   buildColorPicker(BuildContext context) {
-    controller.colorDialogColor.value = controller.primaryColor.value;
+    colorController.colorDialogColor.value = colorController.primaryColor.value;
     return AlertDialog(
       title: Container(
         width: MediaQuery.of(context).size.width,
@@ -265,25 +277,22 @@ class SettingsState extends State<Settings> {
               color: screenPickerColor,
               onColorChanged: (Color color) {
                 screenPickerColor = color;
-                controller.colorDialogColor.value = color;
+                colorController.colorDialogColor.value = color;
               },
               width: 44,
               height: 44,
               enableShadesSelection: false,
               borderRadius: 22,
               heading: Text(
-                'Select color',
+                DataCacheManager.language.selectColor,
                 style: Theme.of(context).textTheme.headline5,
               ),
-              subheading: Text(
-                'Select color shade',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
+
             ),
             Obx(() {
               return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: controller.colorDialogColor.value,
+                      primary: colorController.colorDialogColor.value,
                       fixedSize: const Size(280, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
@@ -293,7 +302,7 @@ class SettingsState extends State<Settings> {
                     UserDefaults.primaryColor = screenPickerColor.hex;
                     Navigator.of(context).pop(false);
                   },
-                  child: Text("Apply"));
+                  child: Text(DataCacheManager.language.apply));
             }),
             SizedBox(
               height: 10,
@@ -301,14 +310,14 @@ class SettingsState extends State<Settings> {
             Obx(() {
               return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: controller.colorDialogColor.value,
+                      primary: colorController.colorDialogColor.value,
                       fixedSize: const Size(280, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text("Cancel"));
+                  child: Text(DataCacheManager.language.cancel));
             }),
           ],
         ),
@@ -325,19 +334,16 @@ class SettingsState extends State<Settings> {
         controller.email.value = info.email;
         controller.googleName = info.displayName ?? "";
         controller.googleBtnText.value =
-            "Log Out" + " (${controller.googleName})";
+            "${DataCacheManager.language.logout}" + " (${controller.googleName})";
         UserDefaults.email = controller.email.value;
         UserDefaults.userName = controller.googleName;
         controller.picUrl.value = info.photoUrl ?? "";
         UserDefaults.picURL = controller.picUrl.value;
-        print("Photo URL ${controller.picUrl.value}");
-        print(",,, call from try");
         await DBHandler.syncData(context: context);
 
       }
     } catch (error) {
       print(error);
-      print(",,, call from catch");
     }
   }
   logout() async {
@@ -345,7 +351,7 @@ class SettingsState extends State<Settings> {
       await DBHandler.syncData(context: context);
       await _googleSignIn.signOut();
       controller.email.value = "";
-      controller.googleBtnText.value = googleBtnTxt;
+      controller.googleBtnText.value = DataCacheManager.language.signInWithGoogle;
       UserDefaults.email = "";
       UserDefaults.userName = "";
       controller.picUrl.value = "";
@@ -360,17 +366,16 @@ class SettingsState extends State<Settings> {
     if (!await Util.isInternetAvailable()) {
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please connect internet before syncing.')),
+           SnackBar(content: Text(DataCacheManager.language.internetWarning)),
         );
       return;
     } else {
       if (controller.email.value.isEmpty) {
-        EasyLoading.show(status: "Signing in...", maskType: EasyLoadingMaskType.black);
+        EasyLoading.show(status: DataCacheManager.language.signingIn, maskType: EasyLoadingMaskType.black);
         await signIn();
-        // controller.email.value = "rxalimurad@gmail.com";
         EasyLoading.dismiss();
       } else {
-        EasyLoading.show(status: "Logging out...", maskType: EasyLoadingMaskType.black);
+        EasyLoading.show(status: DataCacheManager.language.loggingOut, maskType: EasyLoadingMaskType.black);
 
         await logout();
         // controller.email.value = "";

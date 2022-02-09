@@ -1,13 +1,14 @@
 
+import 'package:QR_Scanner/constants.dart';
+import 'package:QR_Scanner/screens/UserDefaults.dart';
 import 'package:QR_Scanner/utilities/util.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:QR_Scanner/utilities/DBHandler.dart';
-import 'package:QR_Scanner/Utilities/DataCacheManager.dart';
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:QR_Scanner/widgets/CustomNavigation.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ResultScreen extends StatefulWidget {
   String qrData;
@@ -25,11 +26,43 @@ class _ResultScreenState extends State<ResultScreen> {
 
   late List <ActionObj>  data;
 
+  final BannerAd bannerAd = BannerAd(
+    adUnitId: bannerAdId,
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Util.syncDataIfNeeded();
+    bannerAd.load();
+    if (UserDefaults.count % 3 == 0) {
+      loadInterstitialAd();
+    }
+    UserDefaults.count += 1;
+
+  }
+
+  loadInterstitialAd() {
+    if (true) {
+      InterstitialAd.load(
+          adUnitId: interstitialAdId,
+          request: AdRequest(),
+          adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: (InterstitialAd ad) {
+              // Keep a reference to the ad so you can show it later.
+              DataCacheManager.interstitialAd = ad;
+              DataCacheManager.interstitialAd?.show();
+            },
+            onAdFailedToLoad: (LoadAdError error) {
+              print('InterstitialAd failed to load: $error');
+            },
+          ));
+    }
   }
 
   @override
@@ -44,8 +77,7 @@ class _ResultScreenState extends State<ResultScreen> {
               IconButton(onPressed: () {
                 _onBackPress();
               }, icon: Icon(Icons.arrow_back, color: Colors.white, size: 30,)),
-              Text(
-                "Scanner Result",
+              Text(DataCacheManager.language.scanResult,
                 style: TextStyle(color: Colors.white, fontSize: 30),
               ),
             ],)),
@@ -60,7 +92,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 strokeWidth: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: SelectableText(widget.isNRF? "No QR code found." : widget.qrData),
+                  child: SelectableText(widget.isNRF? DataCacheManager.language.qrNRFRes : widget.qrData),
                 ),
               ),
             ),
@@ -93,13 +125,13 @@ class _ResultScreenState extends State<ResultScreen> {
                               case ActionsEnum.copy:
                                 Clipboard.setData(ClipboardData(text: widget.qrData));
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Copied to clipboard')),
+                                   SnackBar(content: Text(DataCacheManager.language.ctClip)),
                                 );
 
                                 break;
                               case ActionsEnum.share:
                                 await FlutterShare.share(
-                                  text: widget.qrData, title: 'QR Scan Result'
+                                  text: widget.qrData, title: DataCacheManager.language.scanResult
                                 );
                                 break;
 
@@ -137,7 +169,10 @@ class _ResultScreenState extends State<ResultScreen> {
                       }),
                 ),
               ),
-            )
+            ),
+           Container(height: 70, color: Colors.transparent,child:
+            AdWidget(ad:  bannerAd )
+            ,)
           ]),
         ),
       ),
@@ -145,7 +180,7 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   Future<bool> _onBackPress() async {
-    DataCacheManager().showingPopup = false;
+    DataCacheManager.showingPopup = false;
     Navigator.of(context).pop(false);
     return true;
   }

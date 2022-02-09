@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:QR_Scanner/controllers/controllers.dart';
 import 'package:QR_Scanner/screens/UserDefaults.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,6 +14,17 @@ import 'package:url_launcher/url_launcher.dart';
 import 'DBHandler.dart';
 
 class Util {
+  static setControllerFromCache(){
+    GoogleSignInController controller = Get.find();
+    ColorController colorController = Get.find();
+    controller.email.value = UserDefaults.email;
+    controller.googleName = UserDefaults.userName;
+    controller.picUrl.value = UserDefaults.picURL;
+    if (UserDefaults.primaryColor.isNotEmpty)
+      colorController.primaryColor.value = Util.fromHex(UserDefaults.primaryColor);
+    controller.lastSyncAt.value = UserDefaults.lastSyncAt;
+    EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.wave;
+  }
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
@@ -98,6 +111,8 @@ class Util {
       }
     }
   }
+
+
 
 }
 

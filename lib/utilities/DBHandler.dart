@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,9 +11,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:QR_Scanner/controllers/controllers.dart';
 import 'package:QR_Scanner/screens/UserDefaults.dart';
-import 'package:QR_Scanner/screens/history.dart';
 import 'package:QR_Scanner/utilities/util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -58,7 +57,7 @@ class DBHandler {
     }
   }
   static Future<void> removeAllDataFromFirebase() async {
-    ColorController c = Get.find();
+    GoogleSignInController c = Get.find();
     var email = c.email.value;
     email = email.replaceAll("@", "");
     email = email.replaceAll(".", "");
@@ -68,7 +67,7 @@ class DBHandler {
 
   static Future<void> deleteData(String sr) async {
     var db = await initDB();
-    var count = await db.rawDelete('DELETE FROM history WHERE sr = ?', ['$sr']);
+    var _ = await db.rawDelete('DELETE FROM history WHERE sr = ?', ['$sr']);
     db.close();
     await removeDataFromFirebase(sr);
   }
@@ -104,25 +103,25 @@ class DBHandler {
 
   }
   static Future<void> syncData({BuildContext? context }) async {
-    ColorController c = Get.find();
+    GoogleSignInController c = Get.find();
     var email = c.email.value;
     if (email.isEmpty && context != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please sign in to sync data in settings.')),
+         SnackBar(content: Text(DataCacheManager.language.internetWarning)),
       );
       return;
     }
     if (!await Util.isInternetAvailable()) {
       if (context != null)
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please connect internet before syncing.')),
+         SnackBar(content: Text(DataCacheManager.language.internetWarning)),
       );
       return;
     }
 
 
 
-    EasyLoading.show(status: "Syncing Data...", maskType: EasyLoadingMaskType.black);
+    EasyLoading.show(status: DataCacheManager.language.syncingData, maskType: EasyLoadingMaskType.black);
 
     Map<String, QRHistory> qrHistoryMap = {};
     var db = await initDB();
@@ -171,13 +170,13 @@ class DBHandler {
     historyController.qrHistoryList.value = qrHistoryList;
     EasyLoading.dismiss();
     UserDefaults.lastSyncAt = Util.getDateNow();
-    Get.find<ColorController>().lastSyncAt.value = UserDefaults.lastSyncAt;
+    Get.find<GoogleSignInController>().lastSyncAt.value = UserDefaults.lastSyncAt;
   }
 
 
 
   static Future<void> removeDataFromFirebase(String sr) async {
-    ColorController c = Get.find();
+    GoogleSignInController c = Get.find();
     var email = c.email.value;
     if (email.isEmpty) {
       return;
@@ -190,7 +189,7 @@ class DBHandler {
   }
 
   static Future<void>  addDataInFirebase(QRHistory entry) async {
-    ColorController c = Get.find();
+    GoogleSignInController c = Get.find();
     var email = c.email.value;
     if (email.isEmpty) {
       return;
