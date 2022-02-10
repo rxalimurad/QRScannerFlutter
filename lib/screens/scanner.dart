@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:QR_Scanner/screens/UserDefaults.dart';
 import 'package:QR_Scanner/utilities/DBHandler.dart';
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:QR_Scanner/utilities/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
@@ -10,7 +11,6 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:QR_Scanner/Screens/resultScreen.dart';
-import 'package:QR_Scanner/Utilities/DataCacheManager.dart';
 import 'package:QR_Scanner/controllers/controllers.dart';
 import 'package:r_scan/r_scan.dart';
 import 'package:vibration/vibration.dart';
@@ -28,6 +28,8 @@ class _ScannerState extends State<Scanner> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   ColorController colorController = Get.find();
+
+
 
   @override
   void reassemble() {
@@ -48,7 +50,7 @@ class _ScannerState extends State<Scanner> {
               backgroundColor: colorController.primaryColor.value,
                 onPressed: () async {
                   await controller?.toggleFlash();
-                  setState(() {});
+                 setState(() {});
                 },
                 child: (Icon(Icons.flash_on, size: 30))),
             right: 20,
@@ -88,7 +90,7 @@ class _ScannerState extends State<Scanner> {
                       context,
                       MaterialPageRoute(builder: (context) =>  ResultScreen("")),
                     );
-                    DataCacheManager().showingPopup = true;
+                    DataCacheManager.showingPopup = true;
 
                   } else {
                     if (UserDefaults.isVibrationON) {
@@ -105,13 +107,14 @@ class _ScannerState extends State<Scanner> {
                       context,
                       MaterialPageRoute(builder: (context) =>  ResultScreen("${result.message}")),
                     );
-                    DataCacheManager().showingPopup = true;
+                    DataCacheManager.showingPopup = true;
                   }
                 },
                 child: (Icon(Icons.photo, size: 30))),
             left: (MediaQuery.of(context).size.width / 2) - 15.0,
             bottom: 20,
           ),
+
         ],
       );
   }
@@ -147,7 +150,8 @@ class _ScannerState extends State<Scanner> {
       this.controller = controller;
     });
   controller.scannedDataStream.listen((scanData) async {
-    if (!DataCacheManager().showingPopup) {
+    print("DataCacheManager().showingPopup ${DataCacheManager.showingPopup}");
+    if (!DataCacheManager.showingPopup) {
       if (UserDefaults.isVibrationON) {
         if (await Vibration.hasVibrator() ?? false) {
           Vibration.vibrate();
@@ -162,7 +166,7 @@ class _ScannerState extends State<Scanner> {
           context,
           MaterialPageRoute(builder: (context) =>  ResultScreen("${scanData.code}")),
         );
-        DataCacheManager().showingPopup = true;
+        DataCacheManager.showingPopup = true;
 
     }
     });
@@ -172,7 +176,7 @@ class _ScannerState extends State<Scanner> {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
+         SnackBar(content: Text(DataCacheManager.language.noPermission)),
       );
     }
   }

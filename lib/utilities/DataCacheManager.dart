@@ -1,15 +1,14 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Localization.dart';
 
 class DataCacheManager {
 
   static SharedPreferences? prefs;
 
-  var showingPopup = false;
-  // var data = "https://www.bing.com/images/search?q=QR+code+result+screen&form=HDRSC2&first=1&tsc=ImageHoverTitle";
-  var data = "03324402618";
-  static final DataCacheManager _singleton = DataCacheManager._internal();
-  factory DataCacheManager() {
-    return _singleton;
-  }
-  DataCacheManager._internal();
+  static bool showingPopup = false;
+
+  static InterstitialAd? interstitialAd;
+  static Languages language = Languages();
 }

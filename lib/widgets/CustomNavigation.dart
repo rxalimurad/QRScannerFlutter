@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -17,7 +16,9 @@ class CustomNavigation extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorController controller = Get.find();
+    GoogleSignInController controller = Get.find();
+    ColorController colorController = Get.find();
+
 
     return PreferredSize(
         child: ClipPath(
@@ -31,7 +32,7 @@ class CustomNavigation extends StatelessWidget implements PreferredSizeWidget {
                   top: 0,
                   bottom: 0,
                   child: Container(
-                    color: controller.primaryColor.value,
+                    color: colorController.primaryColor.value,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

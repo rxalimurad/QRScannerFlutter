@@ -55,7 +55,8 @@ dependencies:
   vibration: ^1.7.4-nullsafety.0
   crypto: ^3.0.1
   flutter_easyloading: ^3.0.3
-#  admob_flutter: ^2.0.0
+  google_mobile_ads: ^1.0.1
+  package_info_plus: ^1.0.6
 
 
 

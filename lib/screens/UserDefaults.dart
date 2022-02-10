@@ -1,5 +1,4 @@
 import 'package:QR_Scanner/utilities/DataCacheManager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDefaults {
   static String get email  {
@@ -7,6 +6,13 @@ class UserDefaults {
   }
   static set email(String email)  {
     DataCacheManager.prefs?.setString("emailUserDefault", email);
+  }
+
+  static int get count  {
+    return DataCacheManager.prefs?.getInt("count") ?? 0;
+  }
+  static set count(int count)  {
+    DataCacheManager.prefs?.setInt("count", count);
   }
 
   static String get picURL  {
