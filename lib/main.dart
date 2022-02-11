@@ -25,8 +25,8 @@ void main()async {
   Get.lazyPut(() => ColorController());
   Get.lazyPut(() => GoogleSignInController());
   Get.lazyPut(()=>HistoryController());
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+  //     overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await Firebase.initializeApp();
@@ -62,10 +62,12 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   final pageViewController = PageController();
+
   int _selectedItemPosition = 0;
   @override
   void initState() {
     super.initState();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -80,7 +82,9 @@ class _RootViewState extends State<RootView> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
-        child: PageView(children: [
+        child: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          children: [
           Scanner(),
           QRGeneratorSharePage(),
           HistoryView(),

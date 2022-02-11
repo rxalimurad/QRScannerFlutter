@@ -46,7 +46,7 @@ class CustomNavigation extends StatelessWidget implements PreferredSizeWidget {
                 ClipOval(
 
                   child: Visibility(
-                    visible: isSettingScreen,
+                    visible: isSettingScreen && controller.picUrl.value.isNotEmpty,
                     child: Obx(() {
                       return  Container(
                           width: 60.0,

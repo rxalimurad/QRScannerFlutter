@@ -107,7 +107,7 @@ class DBHandler {
     var email = c.email.value;
     if (email.isEmpty && context != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text(DataCacheManager.language.internetWarning)),
+         SnackBar(content: Text(DataCacheManager.language.signingWarning)),
       );
       return;
     }

@@ -32,7 +32,6 @@ class HistoryViewState extends State<HistoryView> {
     Get.lazyPut(() => HistoryController());
     setupDB();
     super.initState();
-    bannerAd.load();
   }
 
   Future<void> setupDB() async {
@@ -47,7 +46,7 @@ class HistoryViewState extends State<HistoryView> {
     return Scaffold(
       appBar: CustomNavigation(
           title: Text(
-        "History",
+        DataCacheManager.language.history,
         style: TextStyle(color: Colors.white, fontSize: 30),
       )),
       body: Obx(() {
@@ -55,7 +54,10 @@ class HistoryViewState extends State<HistoryView> {
           child: Column(children: [
             Visibility(
               visible: (UserDefaults.email.isNotEmpty &&
-                  Get.find<GoogleSignInController>().lastSyncAt.value.isNotEmpty),
+                  Get.find<GoogleSignInController>()
+                      .lastSyncAt
+                      .value
+                      .isNotEmpty),
               child: Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
                 child: Container(
@@ -77,8 +79,7 @@ class HistoryViewState extends State<HistoryView> {
                     itemBuilder: (context, index) {
                       return Container(
                         decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
+                            borderRadius: BorderRadius.all(Radius.circular(20))),
                         padding: EdgeInsets.only(
                             left: 20, right: 20, bottom: 10, top: 0),
                         child: Material(
@@ -86,12 +87,10 @@ class HistoryViewState extends State<HistoryView> {
                           elevation: 10.0,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white)),
+                                backgroundColor: MaterialStateProperty.all<Color>(
+                                    Colors.white)),
                             onPressed: () {
-                              var dataToShow =
-                                  c.qrHistoryList.value[index].data;
+                              var dataToShow = c.qrHistoryList.value[index].data;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -105,17 +104,17 @@ class HistoryViewState extends State<HistoryView> {
                             },
                             child: Center(
                               child: Row(children: [
-                                QrImage(
-                                  size: 70,
-                                  //size of the QrImage widget.
-                                  // ignore: invalid_use_of_protected_member
-                                  data: c.qrHistoryList.value[index]
-                                      .data, //textdata used to create QR code
-                                ),
+                                if (c.qrHistoryList.value[index].data.isNotEmpty)
+                                  QrImage(
+                                    size: 70,
+                                    //size of the QrImage widget.
+                                    // ignore: invalid_use_of_protected_member
+                                    data: c.qrHistoryList.value[index]
+                                        .data, //textdata used to create QR code
+                                  ),
                                 Flexible(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       // ignore: invalid_use_of_protected_member
                                       Text(
@@ -165,7 +164,13 @@ class HistoryViewState extends State<HistoryView> {
             Container(
               height: 70,
               color: Colors.transparent,
-              child: AdWidget(ad: bannerAd),
+              child: FutureBuilder(
+                future: bannerAd.load(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  return AdWidget(ad: bannerAd);
+                },
+              ),
             )
           ]),
         );
@@ -215,4 +220,3 @@ class HistoryViewState extends State<HistoryView> {
         });
   }
 }
-

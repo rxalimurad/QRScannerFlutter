@@ -37,9 +37,6 @@ class SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    // if (UserDefaults.email.isNotEmpty) {
-    //   signIn();
-    // }
   }
 
   @override
@@ -55,72 +52,153 @@ class SettingsState extends State<Settings> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
-          child: Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) {
-                        return buildColorPicker(context);
-                      });
-                }, child: Obx(() {
-                  return Material(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      elevation: 10.0,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: colorController.primaryColor.value,
-                        ),
-                        height: 70,
-                        child: Center(child: Text(DataCacheManager.language.selectPrimaryColor, style: TextStyle(color: Colors.white),)),
-                      ));
-                })),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                  child: Material(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(onTap: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return buildColorPicker(context);
+                    });
+              }, child: Obx(() {
+                return Material(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     elevation: 10.0,
                     child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: colorController.primaryColor.value,
+                      ),
+                      height: 70,
+                      child: Center(child: Text(DataCacheManager.language.selectPrimaryColor, style: TextStyle(color: Colors.white),)),
+                    ));
+              })),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                child: Material(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  elevation: 10.0,
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, bottom: 20, top: 20),
+                      child: Row(
+                        children: [
+                          Icon(Icons.vibration),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            DataCacheManager.language.vibration,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Spacer(),
+                          Obx(() {
+                            return ToggleSwitch(
+                              minWidth: 50.0,
+                              initialLabelIndex: UserDefaults.isVibrationON ? 0 : 1,
+                              cornerRadius: 20.0,
+                              activeFgColor: Colors.white,
+                              inactiveBgColor: Colors.grey,
+                              inactiveFgColor: Colors.white,
+                              totalSwitches: 2,
+                              labels: [DataCacheManager.language.on, DataCacheManager.language.off],
+                              activeBgColors: [
+                                [colorController.primaryColor.value],
+                                [colorController.primaryColor.value]
+                              ],
+                              onToggle: (index) {
+                                UserDefaults.isVibrationON = (index == 0);
+                              },
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                child: Material(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  elevation: 10.0,
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, bottom: 20, top: 20),
+                      child: Row(
+                        children: [
+                          Icon(Icons.volume_down_rounded),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            DataCacheManager.language.sound,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Spacer(),
+                          Obx(() {
+                            return ToggleSwitch(
+                              minWidth: 50.0,
+                              initialLabelIndex: UserDefaults.isSoundON  ? 0 : 1,
+                              cornerRadius: 20.0,
+                              activeFgColor: Colors.white,
+                              inactiveBgColor: Colors.grey,
+                              inactiveFgColor: Colors.white,
+                              totalSwitches: 2,
+                              labels: [DataCacheManager.language.on, DataCacheManager.language.off],
+                              activeBgColors: [
+                                [colorController.primaryColor.value],
+                                [colorController.primaryColor.value]
+                              ],
+                              onToggle: (index) async {
+                                UserDefaults.isSoundON = (index == 0);
+
+
+                              },
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Spacer(),
+              Visibility(
+                visible: enableCloudBackup,
+                child: InkWell(
+                  onTap: () {
+                    _handleSignIn();
+                  },
+                  child: Center(
+                    child: Ink(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Color(0xFF397AF3),),
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20, top: 20),
-                        child: Row(
+                        padding: EdgeInsets.all(12),
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            Icon(Icons.vibration),
-                            SizedBox(
+                            Image.asset(
+                              "assets/googleicon.png",
                               width: 20,
+                              height: 20,
                             ),
-                            Text(
-                              DataCacheManager.language.vibration,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            Spacer(),
+                            // <-- Use 'Image.asset(...)' here
+                            SizedBox(width: 12),
                             Obx(() {
-                              return ToggleSwitch(
-                                minWidth: 50.0,
-                                initialLabelIndex: UserDefaults.isVibrationON ? 0 : 1,
-                                cornerRadius: 20.0,
-                                activeFgColor: Colors.white,
-                                inactiveBgColor: Colors.grey,
-                                inactiveFgColor: Colors.white,
-                                totalSwitches: 2,
-                                labels: [DataCacheManager.language.on, DataCacheManager.language.off],
-                                activeBgColors: [
-                                  [colorController.primaryColor.value],
-                                  [colorController.primaryColor.value]
-                                ],
-                                onToggle: (index) {
-                                  UserDefaults.isVibrationON = (index == 0);
-                                },
+                              return Text(
+                                (controller.email.value.isEmpty) ? controller.googleBtnText.value : DataCacheManager.language.logout + " (${controller.googleName})",
+                                style: TextStyle(color: Colors.white),
                               );
                             }),
                           ],
@@ -129,138 +207,53 @@ class SettingsState extends State<Settings> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                  child: Material(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    elevation: 10.0,
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20, top: 20),
-                        child: Row(
-                          children: [
-                            Icon(Icons.volume_down_rounded),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              DataCacheManager.language.sound,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            Spacer(),
-                            Obx(() {
-                              return ToggleSwitch(
-                                minWidth: 50.0,
-                                initialLabelIndex: UserDefaults.isSoundON  ? 0 : 1,
-                                cornerRadius: 20.0,
-                                activeFgColor: Colors.white,
-                                inactiveBgColor: Colors.grey,
-                                inactiveFgColor: Colors.white,
-                                totalSwitches: 2,
-                                labels: [DataCacheManager.language.on, DataCacheManager.language.off],
-                                activeBgColors: [
-                                  [colorController.primaryColor.value],
-                                  [colorController.primaryColor.value]
-                                ],
-                                onToggle: (index) async {
-                                  UserDefaults.isSoundON = (index == 0);
-
-
-                                },
-                              );
-                            }),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Visibility(
-                  visible: enableCloudBackup,
-                  child: InkWell(
-                    onTap: () {
-                      _handleSignIn();
-                    },
-                    child: Center(
-                      child: Ink(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Color(0xFF397AF3),),
-                        child: Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
+              ),
+              Spacer(),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
+                child: Material(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  elevation: 10.0,
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, bottom: 20, top: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            DataCacheManager.language.about,
+                            textScaleFactor: 1.5,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
                             children: [
-                              Image.asset(
-                                "assets/googleicon.png",
+                              Icon(Icons.person),
+                              SizedBox(
                                 width: 20,
-                                height: 20,
                               ),
-                              // <-- Use 'Image.asset(...)' here
-                              SizedBox(width: 12),
-                              Obx(() {
-                                return Text(
-                                  (controller.email.value.isEmpty) ? controller.googleBtnText.value : DataCacheManager.language.logout + " (${controller.googleName})",
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              }),
+                              FutureBuilder(
+                                future: PackageInfo.fromPlatform(),
+                                builder: (w,e){
+                                  if (e.data == null) { return Container();}
+                                  return Text(
+                                    "${DataCacheManager.language.applicationVerison} ${(e.data as PackageInfo).version}\n${DataCacheManager.language.buildNo} ${(e.data as PackageInfo).buildNumber}\n${DataCacheManager.language.releaseDate} $releaseDate",
+                                    style: TextStyle(color: Colors.black),
+                                  );
+                                },
+                              ),
                             ],
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Spacer(),
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
-                  child: Material(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    elevation: 10.0,
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20, top: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              DataCacheManager.language.about,
-                              textScaleFactor: 1.5,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.person),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: FutureBuilder(
-                                    future: PackageInfo.fromPlatform(),
-                                    builder: (w,e){
-
-                                      return Text(
-                                        "${DataCacheManager.language.applicationVerison} ${(e.data as PackageInfo).version}\n${DataCacheManager.language.buildNo} ${(e.data as PackageInfo).buildNumber}\n${DataCacheManager.language.releaseDate} $releaseDate",
-                                        style: TextStyle(color: Colors.black),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }
