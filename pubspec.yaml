@@ -1,4 +1,4 @@
-name: qr_scan_generator
+name: QR_Scanner
 description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
@@ -53,6 +53,10 @@ dependencies:
   google_sign_in: ^5.2.3
   flutter_beep: ^1.0.0
   vibration: ^1.7.4-nullsafety.0
+  crypto: ^3.0.1
+  flutter_easyloading: ^3.0.3
+  google_mobile_ads: ^1.0.1
+  package_info_plus: ^1.0.6
 
 
 

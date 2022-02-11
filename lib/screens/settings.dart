@@ -1,15 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:qr_scan_generator/controllers/controllers.dart';
-import 'package:qr_scan_generator/screens/UserDefaulfs.dart';
-import 'package:qr_scan_generator/utilities/DBHandler.dart';
-import 'package:qr_scan_generator/utilities/util.dart';
-import 'package:qr_scan_generator/widgets/CustomNavigation.dart';
+import 'package:QR_Scanner/controllers/controllers.dart';
+import 'package:QR_Scanner/screens/UserDefaults.dart';
+import 'package:QR_Scanner/utilities/DBHandler.dart';
+import 'package:QR_Scanner/utilities/util.dart';
+import 'package:QR_Scanner/widgets/CustomNavigation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+import '../constants.dart';
 
 class Settings extends StatefulWidget {
 
@@ -22,47 +25,36 @@ class Settings extends StatefulWidget {
 
 class SettingsState extends State<Settings> {
   var screenPickerColor = Colors.yellow.shade50;
-  ColorController controller = Get.find();
+  GoogleSignInController controller = Get.find();
+  ColorController colorController = Get.find();
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
+      "https://www.googleapis.com/auth/userinfo.profile"
     ],
   );
 
   @override
   void initState() {
     super.initState();
-    // if (UserDefaults.email.isNotEmpty) {
-    //   signIn();
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: CustomNavigaton(
-          title: Row(children: [
-            Text(
-              "Settings",
-              style: TextStyle(color: Colors.white, fontSize: 30),
-            ),
-            Container(
-              child: Obx(() {
-                return Text(controller.email.value);
-              }),
-            )
-          ]),
+        appBar: CustomNavigation(
+          isSettingScreen: true,
+          title: Text(
+            DataCacheManager.language.settings,
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Primary Color"),
-              SizedBox(
-                height: 10,
-              ),
               GestureDetector(onTap: () {
                 showDialog(
                     barrierDismissible: false,
@@ -78,10 +70,10 @@ class SettingsState extends State<Settings> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: controller.primaryColor.value,
+                        color: colorController.primaryColor.value,
                       ),
                       height: 70,
-                      child: Center(child: Text("Select Primary Color")),
+                      child: Center(child: Text(DataCacheManager.language.selectPrimaryColor, style: TextStyle(color: Colors.white),)),
                     ));
               })),
               SizedBox(
@@ -104,26 +96,26 @@ class SettingsState extends State<Settings> {
                             width: 20,
                           ),
                           Text(
-                            "Vibration",
+                            DataCacheManager.language.vibration,
                             style: TextStyle(color: Colors.black),
                           ),
                           Spacer(),
                           Obx(() {
                             return ToggleSwitch(
                               minWidth: 50.0,
-                              initialLabelIndex: 1,
+                              initialLabelIndex: UserDefaults.isVibrationON ? 0 : 1,
                               cornerRadius: 20.0,
                               activeFgColor: Colors.white,
                               inactiveBgColor: Colors.grey,
                               inactiveFgColor: Colors.white,
                               totalSwitches: 2,
-                              labels: ['ON', 'OFF'],
+                              labels: [DataCacheManager.language.on, DataCacheManager.language.off],
                               activeBgColors: [
-                                [controller.primaryColor.value],
-                                [controller.primaryColor.value]
+                                [colorController.primaryColor.value],
+                                [colorController.primaryColor.value]
                               ],
                               onToggle: (index) {
-                                print('switched to: $index');
+                                UserDefaults.isVibrationON = (index == 0);
                               },
                             );
                           }),
@@ -150,29 +142,28 @@ class SettingsState extends State<Settings> {
                             width: 20,
                           ),
                           Text(
-                            "Sound",
+                            DataCacheManager.language.sound,
                             style: TextStyle(color: Colors.black),
                           ),
                           Spacer(),
                           Obx(() {
                             return ToggleSwitch(
                               minWidth: 50.0,
-                              initialLabelIndex: 1,
+                              initialLabelIndex: UserDefaults.isSoundON  ? 0 : 1,
                               cornerRadius: 20.0,
                               activeFgColor: Colors.white,
                               inactiveBgColor: Colors.grey,
                               inactiveFgColor: Colors.white,
                               totalSwitches: 2,
-                              labels: ['ON', 'OFF'],
+                              labels: [DataCacheManager.language.on, DataCacheManager.language.off],
                               activeBgColors: [
-                                [controller.primaryColor.value],
-                                [controller.primaryColor.value]
+                                [colorController.primaryColor.value],
+                                [colorController.primaryColor.value]
                               ],
                               onToggle: (index) async {
-                                print('switched to: $index');
+                                UserDefaults.isSoundON = (index == 0);
 
-                                DBHandler.addDataInFirebase(QRHistory(
-                                    3, "New Data", Util.getDateNow()));
+
                               },
                             );
                           }),
@@ -182,35 +173,42 @@ class SettingsState extends State<Settings> {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  _handleSignIn();
-                },
-                child: Ink(
-                  color: Color(0xFF397AF3),
-                  child: Padding(
-                    padding: EdgeInsets.all(6),
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/googleicon.png",
-                          width: 20,
-                          height: 20,
+              Spacer(),
+              Visibility(
+                visible: enableCloudBackup,
+                child: InkWell(
+                  onTap: () {
+                    _handleSignIn();
+                  },
+                  child: Center(
+                    child: Ink(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Color(0xFF397AF3),),
+                      child: Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/googleicon.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            // <-- Use 'Image.asset(...)' here
+                            SizedBox(width: 12),
+                            Obx(() {
+                              return Text(
+                                (controller.email.value.isEmpty) ? controller.googleBtnText.value : DataCacheManager.language.logout + " (${controller.googleName})",
+                                style: TextStyle(color: Colors.white),
+                              );
+                            }),
+                          ],
                         ),
-                        // <-- Use 'Image.asset(...)' here
-                        SizedBox(width: 12),
-                        Obx(() {
-                          return Text(
-                            (controller.email.value.isEmpty) ? controller.googleBtnText.value : "Log Out" + " (${controller.googleName})",
-                            style: TextStyle(color: Colors.white),
-                          );
-                        }),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
+              Spacer(),
               Padding(
                 padding:
                     EdgeInsets.only(left: 0, right: 0, bottom: 10, top: 10),
@@ -225,7 +223,7 @@ class SettingsState extends State<Settings> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "About",
+                            DataCacheManager.language.about,
                             textScaleFactor: 1.5,
                           ),
                           SizedBox(
@@ -237,11 +235,15 @@ class SettingsState extends State<Settings> {
                               SizedBox(
                                 width: 20,
                               ),
-                              Expanded(
-                                child: Text(
-                                  "Application Version 1.0.1\nBuild No 985665\nRelease Date 23 Jan, 2020",
-                                  style: TextStyle(color: Colors.black),
-                                ),
+                              FutureBuilder(
+                                future: PackageInfo.fromPlatform(),
+                                builder: (w,e){
+                                  if (e.data == null) { return Container();}
+                                  return Text(
+                                    "${DataCacheManager.language.applicationVerison} ${(e.data as PackageInfo).version}\n${DataCacheManager.language.buildNo} ${(e.data as PackageInfo).buildNumber}\n${DataCacheManager.language.releaseDate} $releaseDate",
+                                    style: TextStyle(color: Colors.black),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -257,7 +259,7 @@ class SettingsState extends State<Settings> {
   }
 
   buildColorPicker(BuildContext context) {
-    controller.colorDialogColor.value = controller.primaryColor.value;
+    colorController.colorDialogColor.value = colorController.primaryColor.value;
     return AlertDialog(
       title: Container(
         width: MediaQuery.of(context).size.width,
@@ -268,33 +270,32 @@ class SettingsState extends State<Settings> {
               color: screenPickerColor,
               onColorChanged: (Color color) {
                 screenPickerColor = color;
-                controller.colorDialogColor.value = color;
+                colorController.colorDialogColor.value = color;
               },
               width: 44,
               height: 44,
+              enableShadesSelection: false,
               borderRadius: 22,
               heading: Text(
-                'Select color',
+                DataCacheManager.language.selectColor,
                 style: Theme.of(context).textTheme.headline5,
               ),
-              subheading: Text(
-                'Select color shade',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
+
             ),
             Obx(() {
               return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: controller.colorDialogColor.value,
+                      primary: colorController.colorDialogColor.value,
                       fixedSize: const Size(280, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
                   onPressed: () {
                     ColorController controller = Get.find();
                     controller.primaryColor.value = screenPickerColor;
+                    UserDefaults.primaryColor = screenPickerColor.hex;
                     Navigator.of(context).pop(false);
                   },
-                  child: Text("Apply"));
+                  child: Text(DataCacheManager.language.apply));
             }),
             SizedBox(
               height: 10,
@@ -302,14 +303,14 @@ class SettingsState extends State<Settings> {
             Obx(() {
               return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: controller.colorDialogColor.value,
+                      primary: colorController.colorDialogColor.value,
                       fixedSize: const Size(280, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text("Cancel"));
+                  child: Text(DataCacheManager.language.cancel));
             }),
           ],
         ),
@@ -319,33 +320,61 @@ class SettingsState extends State<Settings> {
 
   signIn() async {
     try {
-      var info = await _googleSignIn.signIn();
-      controller.email.value = info?.email ?? "";
-      controller.googleName = info?.displayName ?? "";
-      controller.googleBtnText.value =
-          "Log Out" + " (${controller.googleName})";
-      UserDefaults.email = controller.email.value;
-      UserDefaults.userName = controller.googleName;
+      var info = await _googleSignIn.signIn().onError((error, stackTrace) {
+        return;
+      } );
+      if (info != null) {
+        controller.email.value = info.email;
+        controller.googleName = info.displayName ?? "";
+        controller.googleBtnText.value =
+            "${DataCacheManager.language.logout}" + " (${controller.googleName})";
+        UserDefaults.email = controller.email.value;
+        UserDefaults.userName = controller.googleName;
+        controller.picUrl.value = info.photoUrl ?? "";
+        UserDefaults.picURL = controller.picUrl.value;
+        await DBHandler.syncData(context: context);
+
+      }
     } catch (error) {
       print(error);
     }
   }
   logout() async {
     try {
+      await DBHandler.syncData(context: context);
       await _googleSignIn.signOut();
       controller.email.value = "";
-      controller.googleBtnText.value = googleBtnTxt;
+      controller.googleBtnText.value = DataCacheManager.language.signInWithGoogle;
       UserDefaults.email = "";
       UserDefaults.userName = "";
+      controller.picUrl.value = "";
+      controller.lastSyncAt.value = "";
+      UserDefaults.lastSyncAt = "";
+      DBHandler.deleteAllData(removeDataFromCould: false);
     } catch (error) {
       print(error);
     }
   }
   Future<void> _handleSignIn() async {
-    if (controller.email.value.isEmpty) {
-      await signIn();
+    if (!await Util.isInternetAvailable()) {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text(DataCacheManager.language.internetWarning)),
+        );
+      return;
     } else {
-     await logout();
+      if (controller.email.value.isEmpty) {
+        EasyLoading.show(status: DataCacheManager.language.signingIn, maskType: EasyLoadingMaskType.black);
+        await signIn();
+        EasyLoading.dismiss();
+      } else {
+        EasyLoading.show(status: DataCacheManager.language.loggingOut, maskType: EasyLoadingMaskType.black);
+
+        await logout();
+        // controller.email.value = "";
+        EasyLoading.dismiss();
+      }
     }
+
   }
 }

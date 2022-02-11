@@ -1,39 +1,77 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:QR_Scanner/controllers/controllers.dart';
 
-class CustomNavigaton extends StatelessWidget implements PreferredSizeWidget {
+class CustomNavigation extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
   final double barHeight = 40.0;
+   bool isSettingScreen = false;
 
-  CustomNavigaton({Key? key, required this.title}) : super(key: key);
+  CustomNavigation({Key? key, required this.title, this.isSettingScreen = false}) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + 100.0);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight + 50.0);
 
   @override
   Widget build(BuildContext context) {
-    ColorController controller = Get.find();
+    GoogleSignInController controller = Get.find();
+    ColorController colorController = Get.find();
+
 
     return PreferredSize(
         child: ClipPath(
           clipper: WaveClip(),
           child: Obx(() {
-            return Container(
-              color: controller.primaryColor.value,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  title,
-                ],
-              ),
+            return Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Container(
+                    color: colorController.primaryColor.value,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        title,
+                      ],
+                    ),
+                  ),
+                ),
+
+                Positioned(child:
+                ClipOval(
+
+                  child: Visibility(
+                    visible: isSettingScreen && controller.picUrl.value.isNotEmpty,
+                    child: Obx(() {
+                      return  Container(
+                          width: 60.0,
+                          height: 60.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.contain,
+                                  image: new NetworkImage(
+                                      controller.picUrl.value)
+                              )
+                          ));
+
+
+
+                    }),
+                  ),
+                ),
+                  bottom: 10, right: 20, top: 10,),
+
+              ],
             );
           }),
         ),
-        preferredSize: Size.fromHeight(kToolbarHeight + 100));
+        preferredSize: Size.fromHeight(kToolbarHeight + 20));
   }
 }
 

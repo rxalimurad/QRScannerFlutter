@@ -1,12 +1,15 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'dart:io';
+import 'package:QR_Scanner/constants.dart';
+import 'package:QR_Scanner/utilities/DataCacheManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_scan_generator/controllers/controllers.dart';
+import 'package:QR_Scanner/controllers/controllers.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../widgets/CustomNavigation.dart';
@@ -24,12 +27,18 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
   final textcontroller = TextEditingController();
   File? file;
   ColorController c = Get.find();
+  final BannerAd bannerAd = BannerAd(
+    adUnitId: bannerAdId,
+    size: AdSize.mediumRectangle,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("Genrate view opened");
+    bannerAd.load();
 
   }
 
@@ -37,15 +46,16 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
   Widget build(BuildContext context) {
     var controller = Get.find<GeneratorController>();
     return Scaffold(
-      appBar: CustomNavigaton(
+      appBar: CustomNavigation(
         title: Text(
-          "Create",
+          DataCacheManager.language.create,
           style: TextStyle(color: Colors.white, fontSize: 30),
         ),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             RepaintBoundary(
               key: key,
@@ -71,7 +81,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
                   filled: true,
                   fillColor: Colors.blue.shade100,
                   border: OutlineInputBorder(),
-                  labelText: 'Enter Value',
+                  labelText: DataCacheManager.language.enterValue,
                 ),
               ),
             ),
@@ -79,7 +89,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
             ElevatedButton(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Center(child: Text('Create QR Code')),
+                child: Center(child: Text(DataCacheManager.language.createQR)),
               ),
               style: ElevatedButton.styleFrom(
                   primary:  c.primaryColor.value,
@@ -96,7 +106,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
             ),
             SizedBox(height: 30,),
             ElevatedButton(
-              child: Text('Share'),
+              child: Text(DataCacheManager.language.share),
               style: ElevatedButton.styleFrom(
                   primary:  c.primaryColor.value,
                   fixedSize: const Size(300, 50),
@@ -104,7 +114,13 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
                       borderRadius: BorderRadius.circular(50))),
 
               onPressed: controller.textData.value.isEmpty ? null : openShare,
-            )
+            ),
+            SizedBox(height: 30,),
+            Container(height: 250, color: Colors.transparent,child:
+            AdWidget(ad:  bannerAd )
+
+              ,)
+
           ],
         ),
       ),
@@ -135,7 +151,7 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
     await Share.shareFiles(
     [file!.path],
     mimeTypes: ["image/png"],
-    text: "Share the QR Code",
+    text: "${DataCacheManager.language.shareSubject1},\n ${DataCacheManager.language.shareSubject2}: ${textcontroller.text}",
     );
     } catch (e) {
     print(e.toString());
@@ -144,7 +160,3 @@ class _QRGeneratorSharePageState extends State<QRGeneratorSharePage> {
   }
 }
 
-class GeneratorController extends GetxController {
-  var textData = "".obs;
-
-}
